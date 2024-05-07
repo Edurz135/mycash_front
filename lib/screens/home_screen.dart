@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycash_front/components/account_item.dart';
 import 'package:mycash_front/components/operation_item.dart';
 import 'package:mycash_front/components/transaction_item.dart';
+import 'package:mycash_front/screens/accounts_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -61,7 +62,11 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.settings_outlined),
               onPressed: () {
-                // Add your onPressed logic here
+                // Navigate to the settings screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AccountsScreen()),
+                );
               },
             ),
           ],

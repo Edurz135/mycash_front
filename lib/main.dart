@@ -57,13 +57,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          // title: const Text('BottomNavigationBar Sample'),
-          ),
+      // appBar: AppBar(
+      //     // title: const Text('BottomNavigationBar Sample'),
+      //     ),
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 16.0), // Add horizontal padding
+        padding: const EdgeInsets.fromLTRB(
+          16.0, // Left padding
+          20.0, // Top padding
+          16.0, // Right padding
+          0.0, // Bottom padding
+        ), // Add horizontal padding
         child: SingleChildScrollView(
             child: Container(
                 alignment: Alignment.topLeft,
