@@ -64,7 +64,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           child: Padding(
         padding: const EdgeInsets.fromLTRB(
           16.0, // Left padding
-          20.0, // Top padding
+          64.0, // Top padding
           16.0, // Right padding
           0.0, // Bottom padding
         ), // Add horizontal padding
