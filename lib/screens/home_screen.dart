@@ -78,7 +78,6 @@ class HomeScreen extends StatelessWidget {
             children: [
               AccountItem(title: 'Efectivo', amount: 'PEN 930.00'),
               AccountItem(title: 'Débito', amount: 'PEN 4200.00'),
-              AccountItem(title: 'Añadir', amount: 'Cuenta'),
               // Add more here if needed
             ],
           ),

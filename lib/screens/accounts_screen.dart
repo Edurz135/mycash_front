@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/components/detailed_account_item.dart';
+import 'package:mycash_front/screens/create_account_screen.dart';
 
 class AccountsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mis cuentas'),
+        title: const Text('Mis Cuentas'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -38,7 +39,10 @@ class AccountsScreen extends StatelessWidget {
             ),
             FloatingActionButton(
               onPressed: () {
-                // Handle adding an account
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAccountScreen()),
+                );
               },
               child: Icon(Icons.add, color: Colors.grey.shade300),
             ),

@@ -35,15 +35,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     const Text(
-      'Index 1: Business',
+      'Index 1: Estadísticas',
       style: optionStyle,
     ),
     const Text(
-      'Index 2: School',
+      'Index 2: Transacciones',
       style: optionStyle,
     ),
     const Text(
-      'Index 2: asdf',
+      'Index 3: Perfil',
       style: optionStyle,
     ),
   ];
