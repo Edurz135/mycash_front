@@ -3,8 +3,34 @@ import 'package:mycash_front/components/account_item.dart';
 import 'package:mycash_front/components/operation_item.dart';
 import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/screens/accounts_screen.dart';
+import 'package:mycash_front/services/account_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, dynamic>> _accounts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAccounts();
+  }
+
+  Future<void> _fetchAccounts() async {
+    try {
+      final List<Map<String, dynamic>> fetchedAccounts = await AccountService.fetchAccounts(
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM');
+      setState(() {
+        _accounts = fetchedAccounts;
+      });
+    } catch (e) {
+      print('Failed to fetch accounts: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -72,14 +98,15 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        const SingleChildScrollView(
+        SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [
-              AccountItem(title: 'Efectivo', amount: 'PEN 930.00'),
-              AccountItem(title: 'Débito', amount: 'PEN 4200.00'),
-              // Add more here if needed
-            ],
+            children: _accounts.map((account) {
+              return AccountItem(
+                title: account['name'],
+                amount: 'PEN ${account['balance'].toStringAsFixed(2)}',
+              );
+            }).toList(),
           ),
         ),
         const SizedBox(height: 16),

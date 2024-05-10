@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mycash_front/components/detailed_account_item.dart';
+import 'package:mycash_front/components/creditcard_item.dart';
+import 'package:mycash_front/services/account_service.dart';
 
 class CreateAccountScreen extends StatelessWidget {
   @override
@@ -20,196 +21,225 @@ class CreateAccountScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              const SizedBox(height: 16),
-              Center(
-                child: Container(
-                  width: 320,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color.fromRGBO(89, 134, 223, 1),
-                        Color.fromRGBO(177, 86, 168, 1)
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Nueva Cuenta',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Transform.rotate(
-                            angle: 90 * 3.14159 / 180,
-                            child:
-                                Icon(Icons.wifi, size: 36, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        '1234 5678 9012 3456',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildFormItem('Nombre', TextInputType.text),
-                    const SizedBox(height: 20),
-                    _buildCurrencyDropdown(),
-                    const SizedBox(height: 20),
-                    _buildFormItem('Importe', TextInputType.number),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildAddButton(context),
-              const SizedBox(height: 200), // Extra space for keyboard
+              SizedBox(height: 16),
+              CreditCardItem(),
+              SizedBox(height: 20),
+              CreateAccountForm()
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildFormItem(String label, TextInputType inputType) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontSize: 18),
-        ),
-        SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
+class CreateAccountForm extends StatefulWidget {
+  const CreateAccountForm({super.key});
+
+  @override
+  CreateAccountFormState createState() {
+    return CreateAccountFormState();
+  }
+}
+
+class CreateAccountFormState extends State<CreateAccountForm> {
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  //
+  // Note: This is a GlobalKey<FormState>,
+  // not a GlobalKey<MyCustomFormState>.
+  final _formKey = GlobalKey<FormState>();
+
+  String _name = '';
+  int _currencyTypeId = 0;
+  double _balance = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    // Build a Form widget using the _formKey created above.
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Nombre',
+            style: TextStyle(fontSize: 18),
           ),
-          child: TextFormField(
-            keyboardType: inputType,
-            style: TextStyle(color: Colors.black), // Text color for form field
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Ingrese el $label',
-              hintStyle: TextStyle(color: Colors.grey), // Hint text color
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor ingrese un nombre';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                _name = value ?? "";
+              },
+              keyboardType: TextInputType.text,
+              style: const TextStyle(
+                  color: Colors.black), // Text color for form field
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Ingrese el Nombre',
+                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+              ),
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCurrencyDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Moneda',
-          style: TextStyle(fontSize: 18),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
+          const SizedBox(height: 20),
+          const Text(
+            'Moneda',
+            style: TextStyle(fontSize: 18),
           ),
-          child: DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
-              border: InputBorder.none,
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            items: ['Dollar', 'Soles', 'Euro']
-                .map((currency) => DropdownMenuItem<String>(
-                      value: currency,
-                      child: Text(currency, style: TextStyle(color: Colors.black),),
-                    ))
-                .toList(),
-            onChanged: (value) {},
+            child: DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+              ),
+              items: ['Dollar', 'Soles', 'Euro']
+                  .map((currency) => DropdownMenuItem<String>(
+                        value: currency,
+                        child: Text(
+                          currency,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                // Update _currencyTypeId when an item is selected
+                setState(() {
+                  if (value == 'Dollar') {
+                    _currencyTypeId = 1; // Assuming 1 represents Dollar
+                  } else if (value == 'Soles') {
+                    _currencyTypeId = 2; // Assuming 2 represents Soles
+                  } else if (value == 'Euro') {
+                    _currencyTypeId = 3; // Assuming 3 represents Euro
+                  }
+                });
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Por favor seleccione una moneda'; // Error message if no item is selected
+                }
+                return null; // Return null if validation succeeds
+              },
+            ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAddButton(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromRGBO(89, 134, 223, 1),
-            Color.fromRGBO(177, 86, 168, 1)
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: Offset(0, 3),
+          const SizedBox(height: 20),
+          const Text(
+            'Importe',
+            style: TextStyle(fontSize: 18),
           ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor ingrese un importe';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                _balance = double.tryParse(value ?? "") ?? 0.0;
+              },
+              keyboardType: TextInputType.number,
+              style: const TextStyle(
+                  color: Colors.black), // Text color for form field
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Ingrese el importe',
+                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.fromRGBO(89, 134, 223, 1),
+                  Color.fromRGBO(177, 86, 168, 1)
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: TextButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  _createAccount(context, _name, _currencyTypeId, _balance);
+                }
+                // Navigator.pop(context); // Navigate back
+              },
+              child: const Text(
+                'Agregar',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          )
+          // _buildAddButton(context, _formKey),
+          // const SizedBox(height: 200), // Extra space for keyboard
         ],
       ),
-      child: TextButton(
-        onPressed: () {
-          Navigator.pop(context); // Navigate back
-        },
-        child: Text(
-          'Agregar',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
     );
   }
+}
+
+void _createAccount(
+    BuildContext context, String name, int currencyTypeId, double balance) {
+  // Call the service to create the account
+  AccountService.createAccount(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM",
+    name,
+    balance,
+    currencyTypeId,
+  ).then((_) {
+    // Account created successfully, navigate back
+    Navigator.pop(context);
+  }).catchError((error) {
+    // Handle errors if any
+    print("Error creating account: $error");
+    // You can show an error message to the user if needed
+  });
 }
