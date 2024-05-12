@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Navigate to the settings screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AccountsScreen()),
+                  MaterialPageRoute(builder: (context) => AccountsScreen(key: null, accounts: _accounts, fetchAccounts: _fetchAccounts)),
                 );
               },
             ),
@@ -152,6 +152,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         // Add more content for operations here if needed
         const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: TransactionItem(),
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: TransactionItem(),

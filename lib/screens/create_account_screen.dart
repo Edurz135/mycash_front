@@ -26,7 +26,7 @@ class CreateAccountScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              SizedBox(height: 16),
+              SizedBox(height: 40),
               CreditCardItem(),
               SizedBox(height: 20),
               CreateAccountForm()
@@ -74,7 +74,7 @@ class CreateAccountFormState extends State<CreateAccountForm> {
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -107,7 +107,7 @@ class CreateAccountFormState extends State<CreateAccountForm> {
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -121,10 +121,11 @@ class CreateAccountFormState extends State<CreateAccountForm> {
                         value: currency,
                         child: Text(
                           currency,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       ))
                   .toList(),
+              dropdownColor: Colors.white,
               onChanged: (value) {
                 // Update _currencyTypeId when an item is selected
                 setState(() {
@@ -153,7 +154,7 @@ class CreateAccountFormState extends State<CreateAccountForm> {
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -206,7 +207,6 @@ class CreateAccountFormState extends State<CreateAccountForm> {
                   _formKey.currentState!.save();
                   _createAccount(context, _name, _currencyTypeId, _balance);
                 }
-                // Navigator.pop(context); // Navigate back
               },
               child: const Text(
                 'Agregar',
@@ -218,8 +218,6 @@ class CreateAccountFormState extends State<CreateAccountForm> {
               ),
             ),
           )
-          // _buildAddButton(context, _formKey),
-          // const SizedBox(height: 200), // Extra space for keyboard
         ],
       ),
     );

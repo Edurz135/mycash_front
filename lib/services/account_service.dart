@@ -39,4 +39,15 @@ class AccountService {
       throw Exception('Failed to create account');
     }
   }
+
+  static Future<void> deleteAccount(String token, int id) async {
+    final url = Uri.parse('http://10.0.2.2:3000/api/accounts/$id');
+    final response = await http.delete(
+      url,
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete account');
+    }
+  }
 }

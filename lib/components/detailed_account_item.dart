@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class DetailedAccountItem extends StatelessWidget {
   final String title;
   final String amount;
+  final VoidCallback onEditPressed;
+  final VoidCallback onDeletePressed;
 
   const DetailedAccountItem({
     Key? key,
     required this.title,
     required this.amount,
+    required this.onEditPressed,
+    required this.onDeletePressed,
   }) : super(key: key);
 
   @override
@@ -55,13 +59,13 @@ class DetailedAccountItem extends StatelessWidget {
               icon: const Icon(Icons.edit),
               color: Colors.grey.shade300,
               iconSize: 30,
-              onPressed: () {},
+              onPressed: onEditPressed, // Call onEditPressed when edit button is pressed
             ),
             IconButton(
               icon: const Icon(Icons.delete),
               color: Colors.grey.shade300,
               iconSize: 30,
-              onPressed: () {},
+              onPressed: onDeletePressed, // Call onDeletePressed when delete button is pressed
             ),
           ],
         ),

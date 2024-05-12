@@ -3,31 +3,13 @@ import 'package:mycash_front/components/detailed_account_item.dart';
 import 'package:mycash_front/screens/create_account_screen.dart';
 import 'package:mycash_front/services/account_service.dart'; // Import your AccountService
 
-class AccountsScreen extends StatefulWidget {
-  @override
-  _AccountsScreenState createState() => _AccountsScreenState();
-}
-
-class _AccountsScreenState extends State<AccountsScreen> {
-  List<Map<String, dynamic>> accounts = [];
-
-  @override
-  void initState() {
-    super.initState();
-    fetchAccounts();
-  }
-
-  Future<void> fetchAccounts() async {
-    try {
-      final List<Map<String, dynamic>> fetchedAccounts = await AccountService.fetchAccounts('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM'); // Make sure to replace `token` with your actual token
-      setState(() {
-        accounts = fetchedAccounts;
-      });
-    } catch (e) {
-      print('Error fetching accounts: $e');
-      // Handle error appropriately, e.g., show a snackbar
-    }
-  }
+class AccountsScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> accounts;
+  final VoidCallback fetchAccounts;
+  
+  const AccountsScreen(
+      {Key? key, required this.accounts, required this.fetchAccounts})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +40,51 @@ class _AccountsScreenState extends State<AccountsScreen> {
                 child: DetailedAccountItem(
                   title: account['name'] ?? '',
                   amount: 'PEN ${account['balance'] ?? 0.00}',
+                  onEditPressed: () {
+                    // Implement edit functionality here
+                    print('Edit button pressed');
+                  },
+                  onDeletePressed: () {
+                    // Show confirmation dialog before deleting
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Confirmar Eliminación'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '¿Estás seguro de que quieres eliminar la cuenta "${account['name']}"?',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 8),
+                            Text('Monto: PEN ${account['balance'] ?? 0.00}'),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              //ELIMINAR
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Call delete function here
+                              _deleteAccount(
+                                  context, account['id'], fetchAccounts);
+                              // For now, just print a message
+                              print('Deleting account');
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: Text('Eliminar'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
           ],
@@ -74,4 +101,20 @@ class _AccountsScreenState extends State<AccountsScreen> {
       ),
     );
   }
+}
+
+void _deleteAccount(BuildContext context, int id, VoidCallback fetchAccounts) {
+  // Call the service to create the account
+  AccountService.deleteAccount(
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM",
+          id)
+      .then((_) {
+    fetchAccounts();
+    // Account created successfully, navigate back
+    // Navigator.pop(context);
+  }).catchError((error) {
+    // Handle errors if any
+    print("Error deleting account: $error");
+    // You can show an error message to the user if needed
+  });
 }
