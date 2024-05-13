@@ -62,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         padding: const EdgeInsets.fromLTRB(
           16.0, // Left padding
           64.0, // Top padding
-          16.0, // Right padding
+          16.0, // Right paddingr
           0.0, // Bottom padding
         ), // Add horizontal padding
         child: SingleChildScrollView(

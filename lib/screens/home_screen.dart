@@ -4,6 +4,7 @@ import 'package:mycash_front/components/operation_item.dart';
 import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/screens/accounts_screen.dart';
 import 'package:mycash_front/services/account_service.dart';
+import 'package:mycash_front/screens/transaction_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -154,19 +155,51 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
-          child: TransactionItem(),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+              );
+            },
+            child: TransactionItem(),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
-          child: TransactionItem(),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+              );
+            },
+            child: TransactionItem(),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
-          child: TransactionItem(),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+              );
+            },
+            child: TransactionItem(),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
-          child: TransactionItem(),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+              );
+            },
+            child: TransactionItem(),
+          ),
         ),
       ],
     );
