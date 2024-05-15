@@ -5,6 +5,7 @@ import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/screens/accounts_screen.dart';
 import 'package:mycash_front/services/account_service.dart';
 import 'package:mycash_front/screens/transaction_detail_screen.dart';
+import 'package:mycash_front/services/currencyType_service.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,24 +13,69 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Map<String, dynamic>> _accounts = [];
+  final ValueNotifier<List<Map<String, dynamic>>> _accounts =
+      ValueNotifier<List<Map<String, dynamic>>>([]);
+
+  List<Map<String, dynamic>> _currencyTypes = [];
+
+  Future<void> _fetchAccounts() async {
+    try {
+      print("Fetching accounts");
+      final List<Map<String, dynamic>> fetchedAccounts =
+          await AccountService.fetchAccounts();
+      setState(() {
+        print(fetchedAccounts);
+        _accounts.value = fetchedAccounts;
+      });
+    } catch (error) {
+      print('Failed to fetch accounts: $error');
+    }
+  }
+
+  Future<void> _deleteAccount(int id) async {
+    // Call the service to create the account
+    print('Deleting account');
+    AccountService.deleteAccount(id).then((_) {
+      _fetchAccounts();
+    }).catchError((error) {
+      print("Error deleting account: $error");
+    });
+  }
+
+  void _createAccount(String name, int currencyTypeId, double balance) {
+    // Call the service to create the account
+    print('Creating account');
+    AccountService.createAccount(
+      name,
+      balance,
+      currencyTypeId,
+    ).then((_) {
+      _fetchAccounts();
+    }).catchError((error) {
+      // Handle errors if any
+      print("Error creating account: $error");
+      // You can show an error message to the user if needed
+    });
+  }
+
+  void _fetchCurrencyTypes() async {
+    try {
+      print("Fetching currencyTypes");
+      final List<Map<String, dynamic>> fetchedCurrencyTypes =
+          await CurrencyTypeService.fetchCurrencyTypes();
+      setState(() {
+        _currencyTypes = fetchedCurrencyTypes;
+      });
+    } catch (error) {
+      print('Failed to fetch currency types: $error');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _fetchAccounts();
-  }
-
-  Future<void> _fetchAccounts() async {
-    try {
-      final List<Map<String, dynamic>> fetchedAccounts = await AccountService.fetchAccounts(
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM');
-      setState(() {
-        _accounts = fetchedAccounts;
-      });
-    } catch (e) {
-      print('Failed to fetch accounts: $e');
-    }
+    _fetchCurrencyTypes();
   }
 
   @override
@@ -92,23 +138,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Navigate to the settings screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AccountsScreen(key: null, accounts: _accounts, fetchAccounts: _fetchAccounts)),
+                  MaterialPageRoute(
+                      builder: (context) => AccountsScreen(
+                            key: null,
+                            accounts: _accounts,
+                            currencyTypes: _currencyTypes,
+                            fetchAccounts: _fetchAccounts,
+                            deleteAccount: _deleteAccount,
+                            createAccount: _createAccount,
+                          )),
                 );
               },
             ),
           ],
         ),
         const SizedBox(height: 16),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: _accounts.map((account) {
-              return AccountItem(
-                title: account['name'],
-                amount: 'PEN ${account['balance'].toStringAsFixed(2)}',
-              );
-            }).toList(),
-          ),
+        ValueListenableBuilder<List<Map<String, dynamic>>>(
+          valueListenable: _accounts,
+          builder: (context, accounts, child) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: accounts.map((account) {
+                  return AccountItem(
+                    title: account['name'],
+                    amount:
+                        '${account['CurrencyType']['short_name']} ${account['balance'].toStringAsFixed(2)}',
+                  );
+                }).toList(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
         const Text(
@@ -159,7 +219,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => TransactionDetailsScreen()),
               );
             },
             child: TransactionItem(),
@@ -171,7 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => TransactionDetailsScreen()),
               );
             },
             child: TransactionItem(),
@@ -183,7 +245,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => TransactionDetailsScreen()),
               );
             },
             child: TransactionItem(),
@@ -195,7 +258,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TransactionDetailsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => TransactionDetailsScreen()),
               );
             },
             child: TransactionItem(),

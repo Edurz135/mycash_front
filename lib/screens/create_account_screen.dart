@@ -3,6 +3,13 @@ import 'package:mycash_front/components/creditcard_item.dart';
 import 'package:mycash_front/services/account_service.dart';
 
 class CreateAccountScreen extends StatelessWidget {
+  final Function(String name, int currencyTypeId, double balance) createAccount;
+  final List<Map<String, dynamic>> currencyTypes;
+
+  const CreateAccountScreen(
+      {Key? key, required this.currencyTypes, required this.createAccount})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,15 +28,16 @@ class CreateAccountScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              SizedBox(height: 40),
-              CreditCardItem(),
-              SizedBox(height: 20),
-              CreateAccountForm()
+              const SizedBox(height: 40),
+              const CreditCardItem(),
+              const SizedBox(height: 20),
+              CreateAccountForm(
+                  currencyTypes: currencyTypes, createAccount: createAccount)
             ],
           ),
         ),
@@ -39,11 +47,16 @@ class CreateAccountScreen extends StatelessWidget {
 }
 
 class CreateAccountForm extends StatefulWidget {
-  const CreateAccountForm({super.key});
+  final List<Map<String, dynamic>> currencyTypes;
+  final Function(String name, int currencyTypeId, double balance) createAccount;
+
+  const CreateAccountForm(
+      {super.key, required this.currencyTypes, required this.createAccount});
 
   @override
   CreateAccountFormState createState() {
-    return CreateAccountFormState();
+    return CreateAccountFormState(
+        currencyTypes: currencyTypes, createAccount: createAccount);
   }
 }
 
@@ -54,10 +67,15 @@ class CreateAccountFormState extends State<CreateAccountForm> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  final List<Map<String, dynamic>> currencyTypes;
+  final Function(String name, int currencyTypeId, double balance) createAccount;
 
   String _name = '';
   int _currencyTypeId = 0;
   double _balance = 0.0;
+
+  CreateAccountFormState(
+      {required this.currencyTypes, required this.createAccount});
 
   @override
   Widget build(BuildContext context) {
@@ -112,30 +130,28 @@ class CreateAccountFormState extends State<CreateAccountForm> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: DropdownButtonFormField<String>(
+            child: DropdownButtonFormField<Map<String, dynamic>>(
+              value: currencyTypes.isNotEmpty
+                  ? currencyTypes[0]
+                  : null, // Set initial value if available
               decoration: const InputDecoration(
                 border: InputBorder.none,
               ),
-              items: ['Dollar', 'Soles', 'Euro']
-                  .map((currency) => DropdownMenuItem<String>(
-                        value: currency,
-                        child: Text(
-                          currency,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      ))
+              items: currencyTypes
+                  .map<DropdownMenuItem<Map<String, dynamic>>>(
+                      (currency) => DropdownMenuItem<Map<String, dynamic>>(
+                            value: currency,
+                            child: Text(
+                              '${currency['short_name']} - ${currency['name']}',
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ))
                   .toList(),
               dropdownColor: Colors.white,
               onChanged: (value) {
                 // Update _currencyTypeId when an item is selected
                 setState(() {
-                  if (value == 'Dollar') {
-                    _currencyTypeId = 1; // Assuming 1 represents Dollar
-                  } else if (value == 'Soles') {
-                    _currencyTypeId = 2; // Assuming 2 represents Soles
-                  } else if (value == 'Euro') {
-                    _currencyTypeId = 3; // Assuming 3 represents Euro
-                  }
+                  _currencyTypeId = value!['id'] as int;
                 });
               },
               validator: (value) {
@@ -205,7 +221,8 @@ class CreateAccountFormState extends State<CreateAccountForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  _createAccount(context, _name, _currencyTypeId, _balance);
+                  createAccount(_name, _currencyTypeId, _balance);
+                  Navigator.of(context).pop();
                 }
               },
               child: const Text(
@@ -222,22 +239,4 @@ class CreateAccountFormState extends State<CreateAccountForm> {
       ),
     );
   }
-}
-
-void _createAccount(
-    BuildContext context, String name, int currencyTypeId, double balance) {
-  // Call the service to create the account
-  AccountService.createAccount(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM",
-    name,
-    balance,
-    currencyTypeId,
-  ).then((_) {
-    // Account created successfully, navigate back
-    Navigator.pop(context);
-  }).catchError((error) {
-    // Handle errors if any
-    print("Error creating account: $error");
-    // You can show an error message to the user if needed
-  });
 }

@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mycash_front/services/api_config.dart';
 
 class AccountService {
-  static Future<List<Map<String, dynamic>>> fetchAccounts(String token) async {
-    final url = Uri.parse('http://10.0.2.2:3000/api/accounts/');
+  static Future<List<Map<String, dynamic>>> fetchAccounts() async {
+    final url = Uri.parse('${APIConfig.baseURL}accounts/');
     final response = await http.get(
       url,
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer ${APIConfig.token}'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -17,16 +18,15 @@ class AccountService {
   }
 
   static Future<void> createAccount(
-    String token,
     String name,
     double balance,
     int currencyTypeId,
   ) async {
-    final url = Uri.parse('http://10.0.2.2:3000/api/accounts/');
+    final url = Uri.parse('${APIConfig.baseURL}accounts/');
     final response = await http.post(
       url,
       headers: {
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${APIConfig.token}',
         'Content-Type': 'application/json',
       },
       body: json.encode({
@@ -40,11 +40,11 @@ class AccountService {
     }
   }
 
-  static Future<void> deleteAccount(String token, int id) async {
-    final url = Uri.parse('http://10.0.2.2:3000/api/accounts/$id');
+  static Future<void> deleteAccount(int id) async {
+    final url = Uri.parse('${APIConfig.baseURL}accounts/$id');
     final response = await http.delete(
       url,
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer ${APIConfig.token}'},
     );
     if (response.statusCode != 200) {
       throw Exception('Failed to delete account');

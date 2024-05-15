@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/components/detailed_account_item.dart';
 import 'package:mycash_front/screens/create_account_screen.dart';
-import 'package:mycash_front/services/account_service.dart'; // Import your AccountService
 
 class AccountsScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> accounts;
-  final VoidCallback fetchAccounts;
-  
+  // final List<Map<String, dynamic>> accounts;
+  final ValueNotifier<List<Map<String, dynamic>>> accounts;
+  final List<Map<String, dynamic>> currencyTypes;
+  final Function() fetchAccounts;
+  final Function(int id) deleteAccount;
+  final Function(String name, int currencyTypeId, double balance) createAccount;
+
   const AccountsScreen(
-      {Key? key, required this.accounts, required this.fetchAccounts})
+      {Key? key,
+      required this.accounts,
+      required this.currencyTypes,
+      required this.fetchAccounts,
+      required this.deleteAccount,
+      required this.createAccount})
       : super(key: key);
 
   @override
@@ -34,59 +42,63 @@ class AccountsScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            for (var account in accounts)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: DetailedAccountItem(
-                  title: account['name'] ?? '',
-                  amount: 'PEN ${account['balance'] ?? 0.00}',
-                  onEditPressed: () {
-                    // Implement edit functionality here
-                    print('Edit button pressed');
-                  },
-                  onDeletePressed: () {
-                    // Show confirmation dialog before deleting
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('Confirmar Eliminación'),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '¿Estás seguro de que quieres eliminar la cuenta "${account['name']}"?',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 8),
-                            Text('Monto: PEN ${account['balance'] ?? 0.00}'),
-                          ],
+            ValueListenableBuilder<List<Map<String, dynamic>>>(
+              valueListenable: accounts,
+              builder: (context, accounts, child) {
+                return Column(
+                  children: [
+                    for (var account in accounts)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: DetailedAccountItem(
+                          title: account['name'] ?? '',
+                          amount: '${account['CurrencyType']['short_name']} ${account['balance'] ?? 0.00}',
+                          onEditPressed: () {
+                            print('Edit button pressed');
+                          },
+                          onDeletePressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Confirmar Eliminación'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '¿Estás seguro de que quieres eliminar la cuenta "${account['name']}"?',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                        'Monto: PEN ${account['balance'] ?? 0.00}'),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancelar'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      deleteAccount(account['id']);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Eliminar'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              //ELIMINAR
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                            child: Text('Cancelar'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // Call delete function here
-                              _deleteAccount(
-                                  context, account['id'], fetchAccounts);
-                              // For now, just print a message
-                              print('Deleting account');
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                            child: Text('Eliminar'),
-                          ),
-                        ],
                       ),
-                    );
-                  },
-                ),
-              ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -94,27 +106,13 @@ class AccountsScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateAccountScreen()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    CreateAccountScreen(currencyTypes: currencyTypes, createAccount: createAccount)),
           );
         },
         child: Icon(Icons.add, color: Colors.grey.shade300),
       ),
     );
   }
-}
-
-void _deleteAccount(BuildContext context, int id, VoidCallback fetchAccounts) {
-  // Call the service to create the account
-  AccountService.deleteAccount(
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1MjkwNzY4LCJleHAiOjE3MTUzNzcxNjh9.xVm4UPAUqb6f4Ai3WlM5crpHGlYHgIx-s1Av7kJ-6wM",
-          id)
-      .then((_) {
-    fetchAccounts();
-    // Account created successfully, navigate back
-    // Navigator.pop(context);
-  }).catchError((error) {
-    // Handle errors if any
-    print("Error deleting account: $error");
-    // You can show an error message to the user if needed
-  });
 }
