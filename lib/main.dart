@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/screens/home_screen.dart';
 import 'package:mycash_front/screens/profile/profile_screen.dart';
+import 'package:mycash_front/screens/statistics_screen.dart';
 import 'package:mycash_front/services/api_config.dart';
 
 void main() {
@@ -37,10 +38,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    const Text(
-      'Index 1: Estadísticas',
-      style: optionStyle,
-    ),
+    StatisticsScreen(),
     const Text(
       'Index 2: Transacciones',
       style: optionStyle,
