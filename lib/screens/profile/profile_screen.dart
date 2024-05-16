@@ -4,7 +4,6 @@ class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
-
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
@@ -29,8 +28,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: const Column(
               children: [
                 SizedBox(height: 16), // Add spacing
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/images/profilepic.png'),
+                ),
+                SizedBox(height: 16), // Add spacing
                 Text(
-                  'Holi',
+                  'Bienvenido',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,
@@ -50,30 +54,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         const SizedBox(height: 16), // Add spacing
-        const Text(
-          'texto',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Color(0xFF1C1E24),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Nombre: Hawaiana',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFFFFFFFF),
+                ),
+              ),
+              SizedBox(height: 16), // Add spacing
+              Text(
+                'Ayuda y soporte',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFFFFFFFF),
+                ),
+              ),
+              SizedBox(height: 16), // Add spacing
+              Text(
+                'Configuración',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFFFFFFFF),
+                ),
+              ),
+              SizedBox(height: 16), // Add spacing
+              Text(
+                'Cerrar sesión',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFFFFFFFF),
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
-        const Text(
-          'mas texto',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'ola',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-        const SizedBox(height: 16),
       ],
     );
   }
