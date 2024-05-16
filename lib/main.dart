@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/screens/home_screen.dart';
+import 'package:mycash_front/screens/profile/profile_screen.dart';
 import 'package:mycash_front/services/api_config.dart';
 
 void main() {
@@ -44,10 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       'Index 2: Transacciones',
       style: optionStyle,
     ),
-    const Text(
-      'Index 3: Perfil',
-      style: optionStyle,
-    ),
+    ProfileScreen()
   ];
 
   void _onItemTapped(int index) {

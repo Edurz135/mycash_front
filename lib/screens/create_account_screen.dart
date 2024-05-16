@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/components/creditcard_item.dart';
-import 'package:mycash_front/services/account_service.dart';
 
 class CreateAccountScreen extends StatelessWidget {
   final Function(String name, int currencyTypeId, double balance) createAccount;
