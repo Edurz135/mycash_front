@@ -223,7 +223,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => TransactionDetailsScreen()),
               );
             },
-            child: TransactionItem(),
+            child: TransactionItem(
+              Transaccion: "Rental Income",
+              TipoTransaccion: "Débito",
+              monto: 6500,
+              fecha: '14 de diciembre 2023'
+            ),
           ),
         ),
         Padding(
@@ -236,7 +241,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => TransactionDetailsScreen()),
               );
             },
-            child: TransactionItem(),
+            child: TransactionItem(
+              Transaccion: "Universidad",
+              TipoTransaccion: "Crédito",
+              monto: 9000,
+              fecha: '18 de diciembre 2024'
+            ),
           ),
         ),
         Padding(
@@ -249,7 +259,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => TransactionDetailsScreen()),
               );
             },
-            child: TransactionItem(),
+            child: TransactionItem(
+              Transaccion: "Rental Income",
+              TipoTransaccion: "Débito",
+              monto: 6500,
+              fecha: '14 de diciembre 2023'
+            ),
           ),
         ),
         Padding(
@@ -262,7 +277,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => TransactionDetailsScreen()),
               );
             },
-            child: TransactionItem(),
+            child: TransactionItem(
+              Transaccion: "Universidad",
+              TipoTransaccion: "Crédito",
+              monto: 9000,
+              fecha: '18 de diciembre 2024'
+            ),
           ),
         ),
       ],

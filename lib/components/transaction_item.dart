@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 
 class TransactionItem extends StatelessWidget {
+
+  final String Transaccion;
+  final String TipoTransaccion;
+  final double monto;
+  final String fecha;
+
+  TransactionItem({
+    required this.Transaccion,
+    required this.TipoTransaccion,
+    required this.monto,
+    required this.fecha
+  });
+
   @override
   Widget build(BuildContext context) {
+        // Formatear la fecha como una cadena legible
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10), // Set border radius for rounding
       child: Container(
@@ -26,17 +41,17 @@ class TransactionItem extends StatelessWidget {
             ),
             const SizedBox(width: 16), // Add spacing between sections
             // Second Section
-            const Expanded(
+            Expanded(
               flex: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Rental Income',
+                    Transaccion,
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   Text(
-                    'Débito',
+                    TipoTransaccion,
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -44,18 +59,18 @@ class TransactionItem extends StatelessWidget {
             ),
             const SizedBox(width: 16), // Add spacing between sections
             // Third Section
-            const Expanded(
+            Expanded(
               flex: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'PEN 6,500.00',
+                    'PEN $monto',
                     style: TextStyle(
                         color: Color.fromRGBO(80, 196, 116, 1), fontSize: 19),
                   ),
                   Text(
-                    '14 diciembre 2023',
+                    fecha,
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ],

@@ -6,7 +6,6 @@ class TransactionDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detalles de transacción", style: TextStyle(fontWeight: FontWeight.bold),),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.20,
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
               decoration: const BoxDecoration(

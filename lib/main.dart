@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycash_front/screens/home_screen.dart';
 import 'package:mycash_front/screens/profile/profile_screen.dart';
 import 'package:mycash_front/screens/statistics_screen.dart';
+import 'package:mycash_front/screens/transaction_screen.dart';
 import 'package:mycash_front/services/api_config.dart';
 
 void main() {
@@ -39,11 +40,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     StatisticsScreen(),
+    TransactionScreen(),
     const Text(
-      'Index 2: Transacciones',
+      'Index 3: Metas',
       style: optionStyle,
     ),
-    ProfileScreen()
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -60,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         padding: const EdgeInsets.fromLTRB(
           16.0, // Left padding
           64.0, // Top padding
-          16.0, // Right paddingr
+          16.0, // Right padding
           0.0, // Bottom padding
         ), // Add horizontal padding
         child: SingleChildScrollView(
@@ -79,15 +81,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
             label: 'Analytics',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted),
+            icon: Icon(Icons.swap_horiz),
             label: 'Transactions',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.center_focus_strong),
+            label: 'Goals',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle_outlined),
             label: 'Profile',
           ),
         ],
-
         iconSize: 30,
         currentIndex: _selectedIndex,
         selectedItemColor: const Color.fromRGBO(89, 134, 223, 1),
