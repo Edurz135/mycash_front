@@ -21,7 +21,6 @@ class MainLayout extends StatelessWidget {
         brightness: Brightness.dark,
         fontFamily: 'Poppins',
       ),
-      // theme: ThemeData.dark(),
       home: const BottomNavBar(),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mycash_front/components/account_item.dart';
 import 'package:mycash_front/components/operation_item.dart';
@@ -19,7 +21,77 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> _currencyTypes = [];
 
   Future<void> _fetchAccounts() async {
+    // title: account['name'],
+    //                 amount:
+    //                     '${account['CurrencyType']['short_name']} ${account['balance'].toStringAsFixed(2)}',
+
     try {
+      setState(() {
+        _accounts.value = [
+          {
+            "id": 1,
+            "name": "Débito",
+            "type": null,
+            "balance": 50,
+            "userId": 1,
+            "accountTypeId": null,
+            "currencyTypeId": 2,
+            "createdAt": "2024-05-20T15:28:19.000Z",
+            "updatedAt": "2024-05-20T15:28:19.000Z",
+            "CurrencyType": {
+              "id": 2,
+              "name": "Nuevo Sol",
+              "short_name": "PEN",
+              "symbol": "S/.",
+              "base_exchange_rate": 3.7,
+              "createdAt": "2024-05-15T18:06:51.000Z",
+              "updatedAt": "2024-05-20T15:27:24.000Z"
+            }
+          },
+          {
+            "id": 2,
+            "name": "Yape",
+            "type": null,
+            "balance": 500,
+            "userId": 1,
+            "accountTypeId": null,
+            "currencyTypeId": 1,
+            "createdAt": "2024-05-20T15:28:31.000Z",
+            "updatedAt": "2024-05-20T15:28:31.000Z",
+            "CurrencyType": {
+              "id": 1,
+              "name": "Dolar",
+              "short_name": "USD",
+              "symbol": "\$",
+              "base_exchange_rate": 1,
+              "createdAt": "2024-05-15T18:06:51.000Z",
+              "updatedAt": "2024-05-20T15:27:24.000Z"
+            }
+          },
+          {
+            "id": 3,
+            "name": "Plin",
+            "type": null,
+            "balance": 2000,
+            "userId": 1,
+            "accountTypeId": null,
+            "currencyTypeId": 1,
+            "createdAt": "2024-05-20T15:28:49.000Z",
+            "updatedAt": "2024-05-20T15:28:49.000Z",
+            "CurrencyType": {
+              "id": 1,
+              "name": "Dolar",
+              "short_name": "USD",
+              "symbol": "\$",
+              "base_exchange_rate": 1,
+              "createdAt": "2024-05-15T18:06:51.000Z",
+              "updatedAt": "2024-05-20T15:27:24.000Z"
+            }
+          }
+        ];
+      });
+      return;
+      // ignore: dead_code
       print("Fetching accounts");
       final List<Map<String, dynamic>> fetchedAccounts =
           await AccountService.fetchAccounts();
@@ -34,6 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _deleteAccount(int id) async {
     // Call the service to create the account
+    return;
+    // ignore: dead_code
     print('Deleting account');
     AccountService.deleteAccount(id).then((_) {
       _fetchAccounts();
@@ -43,7 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _createAccount(String name, int currencyTypeId, double balance) {
+    return;
     // Call the service to create the account
+    // ignore: dead_code
     print('Creating account');
     AccountService.createAccount(
       name,
@@ -60,6 +136,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _fetchCurrencyTypes() async {
     try {
+      setState(() {
+        _currencyTypes = [
+          {
+            "id": 1,
+            "name": "Dolar",
+            "short_name": "USD",
+            "symbol": "\$",
+            "base_exchange_rate": 1,
+            "createdAt": "2024-05-15T18:06:51.000Z",
+            "updatedAt": "2024-05-20T15:27:24.000Z"
+          },
+          {
+            "id": 2,
+            "name": "Nuevo Sol",
+            "short_name": "PEN",
+            "symbol": "S/.",
+            "base_exchange_rate": 3.7,
+            "createdAt": "2024-05-15T18:06:51.000Z",
+            "updatedAt": "2024-05-20T15:27:24.000Z"
+          }
+        ];
+      });
+      return;
+      // ignore: dead_code
       print("Fetching currencyTypes");
       final List<Map<String, dynamic>> fetchedCurrencyTypes =
           await CurrencyTypeService.fetchCurrencyTypes();
@@ -224,11 +324,10 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: TransactionItem(
-              Transaccion: "Rental Income",
-              TipoTransaccion: "Débito",
-              monto: 6500,
-              fecha: '14 de diciembre 2023'
-            ),
+                Transaccion: "Rental Income",
+                TipoTransaccion: "Débito",
+                monto: 6500,
+                fecha: '14 de diciembre 2023'),
           ),
         ),
         Padding(
@@ -242,11 +341,10 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: TransactionItem(
-              Transaccion: "Universidad",
-              TipoTransaccion: "Crédito",
-              monto: 9000,
-              fecha: '18 de diciembre 2024'
-            ),
+                Transaccion: "Universidad",
+                TipoTransaccion: "Crédito",
+                monto: 9000,
+                fecha: '18 de diciembre 2024'),
           ),
         ),
         Padding(
@@ -260,11 +358,10 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: TransactionItem(
-              Transaccion: "Rental Income",
-              TipoTransaccion: "Débito",
-              monto: 6500,
-              fecha: '14 de diciembre 2023'
-            ),
+                Transaccion: "Rental Income",
+                TipoTransaccion: "Débito",
+                monto: 6500,
+                fecha: '14 de diciembre 2023'),
           ),
         ),
         Padding(
@@ -278,11 +375,10 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: TransactionItem(
-              Transaccion: "Universidad",
-              TipoTransaccion: "Crédito",
-              monto: 9000,
-              fecha: '18 de diciembre 2024'
-            ),
+                Transaccion: "Universidad",
+                TipoTransaccion: "Crédito",
+                monto: 9000,
+                fecha: '18 de diciembre 2024'),
           ),
         ),
       ],
