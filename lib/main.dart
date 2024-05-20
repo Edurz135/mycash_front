@@ -6,7 +6,8 @@ import 'package:mycash_front/screens/transaction_screen.dart';
 import 'package:mycash_front/services/api_config.dart';
 
 void main() {
-  APIConfig.setEnvironment(Environment.development); // or Environment.production
+  APIConfig.setEnvironment(
+      Environment.development); // or Environment.production
   runApp(const MainLayout());
 }
 
@@ -57,8 +58,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Padding(
+      body: Padding(
         padding: const EdgeInsets.fromLTRB(
           16.0, // Left padding
           64.0, // Top padding
@@ -69,7 +69,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             child: Container(
                 alignment: Alignment.topLeft,
                 child: _widgetOptions.elementAt(_selectedIndex))),
-      )),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
