@@ -4,6 +4,7 @@ import 'package:mycash_front/screens/profile/profile_screen.dart';
 import 'package:mycash_front/screens/statistics_screen.dart';
 import 'package:mycash_front/screens/transaction_screen.dart';
 import 'package:mycash_front/services/api_config.dart';
+import 'package:mycash_front/screens/objetive_screen.dart';
 
 void main() {
   APIConfig.setEnvironment(
@@ -41,10 +42,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     HomeScreen(),
     StatisticsScreen(),
     TransactionScreen(),
-    const Text(
-      'Index 3: Metas',
-      style: optionStyle,
-    ),
+    ObjetiveScreen(),
     ProfileScreen(),
   ];
 
