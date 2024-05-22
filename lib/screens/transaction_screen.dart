@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/components/transaction_item.dart';
 
-import 'package:flutter/material.dart';
-import 'package:mycash_front/components/transaction_item.dart';
-
 class TransactionScreen extends StatefulWidget {
   @override
   _TransactionScreenState createState() => _TransactionScreenState();

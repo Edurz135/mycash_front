@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:mycash_front/screens/create_objetive_screen.dart';
+import 'package:mycash_front/screens/objetives/b_create_objetive_screen.dart';
 
 class ObjetiveScreen extends StatefulWidget {
+  const ObjetiveScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ObjetiveScreenState createState() => _ObjetiveScreenState();
 }
 
@@ -54,7 +57,7 @@ class _ObjetiveScreenState extends State<ObjetiveScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreateObjetiveScreen()
+                    builder: (context) => const CreateObjetiveScreen()
                   ),
                 );
             },
