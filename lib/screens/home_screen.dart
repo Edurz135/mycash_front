@@ -1,6 +1,7 @@
 //import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mycash_front/components/account_item.dart';
 import 'package:mycash_front/components/operation_item.dart';
 import 'package:mycash_front/components/transaction_item.dart';
@@ -8,6 +9,7 @@ import 'package:mycash_front/screens/accounts_screen.dart';
 import 'package:mycash_front/services/account_service.dart';
 import 'package:mycash_front/screens/transaction_detail_screen.dart';
 import 'package:mycash_front/services/currencyType_service.dart';
+import 'package:mycash_front/screens/income_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -279,13 +281,23 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        const Row(
+        Row(
           children: [
             Expanded(
-              child: OperationItem(
-                icon: Icons.arrow_upward,
-                label: 'Ingreso',
-              ),
+              child: GestureDetector(
+                 onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => IncomeScreen()),
+                    );
+                  },
+                  child: OperationItem(
+                    icon: Icons.arrow_upward,
+                    label: 'Ingreso',
+                  ),
+              )
+                           
             ),
             SizedBox(width: 8), // Add spacing between boxes
             Expanded(
