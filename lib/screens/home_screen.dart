@@ -23,10 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> _currencyTypes = [];
 
   Future<void> _fetchAccounts() async {
-    // title: account['name'],
-    //                 amount:
-    //                     '${account['CurrencyType']['short_name']} ${account['balance'].toStringAsFixed(2)}',
-
     try {
       setState(() {
         _accounts.value = [
