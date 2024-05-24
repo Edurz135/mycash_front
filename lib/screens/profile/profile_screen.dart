@@ -4,6 +4,7 @@ class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
+
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
@@ -11,10 +12,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
-          borderRadius:
-              BorderRadius.circular(10), // Set border radius for rounding
+          borderRadius: BorderRadius.circular(10),
           child: Container(
-            width: double.infinity, // Full width of the screen
+            width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -27,12 +27,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: const Column(
               children: [
-                SizedBox(height: 16), // Add spacing
+                SizedBox(height: 16),
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage('assets/images/profilepic.png'),
+                  backgroundImage: AssetImage('assets/profilepic.png'),
                 ),
-                SizedBox(height: 16), // Add spacing
+                SizedBox(height: 16),
                 Text(
                   'Bienvenido',
                   textAlign: TextAlign.center,
@@ -48,12 +48,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(height: 16), // Add spacing
+                SizedBox(height: 16),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 16), // Add spacing
+        const SizedBox(height: 16),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(16.0),
@@ -61,44 +61,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Color(0xFF1C1E24),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Nombre: Hawaiana',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFFFFFFFF),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Nombre:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                  SizedBox(width: 18), // Agregar separación
+                  Text(
+                    'Una Hawaina GAAA',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF828087),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
+                ],
               ),
-              SizedBox(height: 16), // Add spacing
-              Text(
-                'Ayuda y soporte',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
-              SizedBox(height: 16), // Add spacing
-              Text(
-                'Configuración',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
-              SizedBox(height: 16), // Add spacing
-              Text(
-                'Cerrar sesión',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
+              SizedBox(height: 22), 
+              _buildMenuItem('Ayuda y soporte', Icons.arrow_forward),
+              SizedBox(height: 22), 
+              _buildMenuItem('Configuración', Icons.arrow_forward),
+              SizedBox(height: 22), 
+              _buildMenuItem('Cerrar sesión', Icons.arrow_forward),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMenuItem(String text, IconData icon) {
+    return InkWell(
+      onTap: () {
+        // lógica para manejar la navegación
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 18,
+              color: Color(0xFFFFFFFF),
+            ),
+          ),
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
+        ],
+      ),
     );
   }
 }
