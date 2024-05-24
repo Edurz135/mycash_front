@@ -8,161 +8,137 @@ class LoginPage extends StatelessWidget {
 
   Widget _form(BuildContext context, bool isKeyBoardOpen) {
     return Container(
-      
       margin: EdgeInsets.fromLTRB(
         MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
         MediaQuery.of(context).size.width *
-            (isKeyBoardOpen ? 0.2 : 0.3), // Margen superior
+            (isKeyBoardOpen ? 0.2 : 0.4), // Margen superior
         MediaQuery.of(context).size.width * 0.1, // Margen derecho
         MediaQuery.of(context).size.width * 0.1, // Margen inferior
       ),
       padding: EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            '¡Bienvenido de vuelta!',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          '¡Bienvenido de vuelta!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        Text(
+          'Correo Electrónico',
+          style: TextStyle(
+            height: 3,
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(20.0)), // Borde del campo de texto
+            contentPadding: EdgeInsets.all(10),
+          ),
+          controller: control.userController,
+        ),
+        Text(
+          'Contraseña',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            height: 3,
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          decoration: InputDecoration(
+            labelStyle:
+                TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+            contentPadding: EdgeInsets.all(10),
+          ),
+          controller: control.passController,
+          obscureText: true,
+        ),
+        _links(context),
+        SizedBox(
+          width: double.infinity,
+          child: TextButton(
+            onPressed: () {
+              control.login(context);
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.purple,
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            child: Text(
+              'Ingresar',
+              style: TextStyle(
+                color: const Color.fromARGB(255, 255, 255, 255),
+                fontSize: 20,
+              ),
             ),
           ),
-          SizedBox(
-            height: 70,
+        ),
+        Text(
+          '¿Aún no tienes una cuenta? Regístrate',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
+            height: 6,
           ),
-          Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Text(
-              'Correo Electrónico',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 255, 255, 255),
-                height: 3,
-              ),
-            ),
-            TextField(
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromARGB(255, 255, 255, 255),),
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.black),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0)), // Borde del campo de texto
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              ),
-              controller: control.userController,
-            ),
-            Text(
-              'Contraseña',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 255, 255, 255),
-                height: 3,
-              ),
-            ),
-            TextField(
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromARGB(255, 255, 255, 255),
-              ),
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.black),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0)), // Borde del campo de texto
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              ),
-              controller: control.passController,
-              obscureText: true,
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            _links(context),
-            SizedBox(
-              height: 40,
-            ),
-            SizedBox(
-              width: double.infinity, // Ocupar todo el ancho disponible
-              child: TextButton(
-                onPressed: () {
-                  // Función que se ejecuta cuando se presiona el botón
-                  control.login(context);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.purple, // Color de fondo del botón
-                  padding: EdgeInsets
-                      .zero, // Padding cero para eliminar el espacio interno
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0), // Bordes cero para eliminar los bordes
-                  ),
-                ),
-                child: Text(
-                  'Ingresar',
-                  style: TextStyle(
-                    color: const Color.fromARGB(
-                        255, 255, 255, 255), // Color del texto
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ),
-            Obx(() => Text(
-                  control.message.value,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: control.messageColor.value,
-                  ),
-                )),
-
-            Text(
-              '¿Aún no tienes una cuenta? Regístrate',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 255, 255, 255),
-                height: 6,
-              ),
-            ),
-          ])
-        ],
-      ),
+        ),
+      ]),
     );
   }
 
   Widget _links(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+      padding: EdgeInsets.all(10),
       child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FaIcon(
-              FontAwesomeIcons.google, // Icono de Google de Font Awesome
-              color: Colors.white, // Color del icono
-              size: 20, // Tamaño del icono
-            ), // Icono
-            SizedBox(width: 50), // Espacio entre el icono y el texto
+              FontAwesomeIcons.google,
+              color: Colors.white,
+              size: 20,
+            ),
+            SizedBox(width: 50),
             FaIcon(
-              FontAwesomeIcons.facebookF, // Icono de Google de Font Awesome
-              color: Colors.white, // Color del icono
-              size: 20, // Tamaño del icono
+              FontAwesomeIcons.facebookF,
+              color: Colors.white,
+              size: 20,
             ), // Icono
             SizedBox(width: 50),
             FaIcon(
-              FontAwesomeIcons.apple, // Icono de Google de Font Awesome
-              color: Colors.white, // Color del icono
-              size: 20, // Tamaño del icono
-            ), // Icono
-            SizedBox(width: 50),
+              FontAwesomeIcons.apple,
+              color: Colors.white,
+              size: 20,
+            ),
           ],
         )
       ]),
@@ -172,7 +148,6 @@ class LoginPage extends StatelessWidget {
   Widget _background(BuildContext context) {
     return Container(color: Color.fromARGB(255, 43, 46, 49));
   }
-
 
   Widget _imageBackground(BuildContext context) {
     return Column(
@@ -190,12 +165,8 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-
   Widget _buildBody(BuildContext context) {
     final bool isKeyBoardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-    print('1 +++++++++++++++++++++++++');
-    print(isKeyBoardOpen);
-    print('2 +++++++++++++++++++++++++');
     return Stack(children: [
       _background(context),
       _imageBackground(context),
