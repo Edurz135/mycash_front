@@ -13,19 +13,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
     {
       "Transaccion": "Rental Income",
       "TipoTransaccion": "Débito",
-      "monto": 6500,
+      "monto": 6500.0,
       "fecha": '14 de diciembre 2023'
     },
     {
       "Transaccion": "Universidad",
       "TipoTransaccion": "Crédito",
-      "monto": 9000,
+      "monto": 9000.0,
       "fecha": '18 de diciembre 2024'
     },
     {
       "Transaccion": "Compra",
       "TipoTransaccion": "Débito",
-      "monto": 3000,
+      "monto": 3000.0,
       "fecha": '20 de diciembre 2024'
     },
     // Añade más transacciones según sea necesario
@@ -42,12 +42,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
   }
 
   double _calcularTotalSaldo() {
-  double total = 0;
-  for (var transaccion in transacciones) {
-    total += transaccion['monto'];
+    double total = 0;
+    for (var transaccion in transacciones) {
+      total += transaccion['monto'];
+    }
+    return total;
   }
-  return total;
-}
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10), // Set border radius for rounding
+            borderRadius:
+                BorderRadius.circular(10), // Set border radius for rounding
             child: Container(
               width: double.infinity, // Full width of the screen
               decoration: const BoxDecoration(
@@ -85,12 +86,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
             ),
           ),
-          SizedBox(height: 20), // Add spacing between the transaction box and the total balance box
+          SizedBox(
+              height:
+                  20), // Add spacing between the transaction box and the total balance box
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 51, 51, 51), // Use grey color for the box
+              color:
+                  Color.fromARGB(255, 51, 51, 51), // Use grey color for the box
               borderRadius: BorderRadius.circular(10), // Make it circular
             ),
             child: Column(
@@ -113,27 +117,22 @@ class _TransactionScreenState extends State<TransactionScreen> {
             ),
           ),
           SizedBox(height: 20),
-          Text(
-            'Lista de cuentas',
-            style: TextStyle(
-                    fontSize: 16,
-                  )
-          ),
+          Text('Lista de cuentas',
+              style: TextStyle(
+                fontSize: 16,
+              )),
           SizedBox(height: 20),
           /*Tres botones de filtro*/
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _filtroActual = 'Todos';
-                  });
-                },
-                child: Text('Todos',
-                        style: TextStyle(color: Colors.white)
-                )
-              ),
+                  onPressed: () {
+                    setState(() {
+                      _filtroActual = 'Todos';
+                    });
+                  },
+                  child: Text('Todos', style: TextStyle(color: Colors.white))),
               ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -141,8 +140,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   });
                 },
                 child: Text('Rental Income',
-                  style: TextStyle(color: Colors.white)
-                ),
+                    style: TextStyle(color: Colors.white)),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -150,19 +148,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     _filtroActual = 'Universidad';
                   });
                 },
-                child: Text('Universidad',
-                  style: TextStyle(color: Colors.white)
-                ),
+                child:
+                    Text('Universidad', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
           SizedBox(height: 20),
-          Text(
-            'Transacciones',
-            style: TextStyle(
-                    fontSize: 16,
-                  )
-          ),
+          Text('Transacciones',
+              style: TextStyle(
+                fontSize: 16,
+              )),
           SizedBox(height: 20),
           Container(
             height: MediaQuery.of(context).size.height,
