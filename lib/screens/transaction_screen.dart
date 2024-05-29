@@ -55,10 +55,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius:
-                BorderRadius.circular(10), // Set border radius for rounding
-            child: Container(
+          //ClipRRect(
+            //borderRadius:
+              //BorderRadius.circular(10), // Set border radius for rounding
+            //child: 
+            Container(
               width: double.infinity, // Full width of the screen
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -72,7 +73,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               child: const Column(
                 children: [
-                  SizedBox(height: 50), // Add spacing
+                  SizedBox(height: 43), // Add spacing
                   Text(
                     'Transacciones',
                     textAlign: TextAlign.center,
@@ -81,102 +82,111 @@ class _TransactionScreenState extends State<TransactionScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 50), // Add spacing
+                  SizedBox(height: 43), // Add spacing
                 ],
               ),
             ),
-          ),
-          SizedBox(
-              height:
-                  20), // Add spacing between the transaction box and the total balance box
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color:
-                  Color.fromARGB(255, 51, 51, 51), // Use grey color for the box
-              borderRadius: BorderRadius.circular(10), // Make it circular
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '\$${_calcularTotalSaldo().toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '     Total Saldo',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          Text('Lista de cuentas',
-              style: TextStyle(
-                fontSize: 16,
-              )),
-          SizedBox(height: 20),
-          /*Tres botones de filtro*/
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _filtroActual = 'Todos';
-                    });
-                  },
-                  child: Text('Todos', style: TextStyle(color: Colors.white))),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _filtroActual = 'Rental Income';
-                  });
-                },
-                child: Text('Rental Income',
-                    style: TextStyle(color: Colors.white)),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _filtroActual = 'Universidad';
-                  });
-                },
-                child:
-                    Text('Universidad', style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          Text('Transacciones',
-              style: TextStyle(
-                fontSize: 16,
-              )),
-          SizedBox(height: 20),
-          Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: transaccionesFiltradas.map((transaccion) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: GestureDetector(
-                    child: TransactionItem(
-                      Transaccion: transaccion["Transaccion"],
-                      TipoTransaccion: transaccion["TipoTransaccion"],
-                      monto: transaccion["monto"],
-                      fecha: transaccion["fecha"],
+          //),
+          //SizedBox(height: 20), // Add spacing between the transaction box and the total balance box
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child:
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [ 
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color:
+                          Color.fromARGB(255, 51, 51, 51), // Use grey color for the box
+                      borderRadius: BorderRadius.circular(10), // Make it circular
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\$${_calcularTotalSaldo().toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '     Total Saldo',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }).toList(),
-            ),
-          ),
+                  SizedBox(height: 20),
+                  Text('Lista de cuentas',
+                      style: TextStyle(
+                        fontSize: 16,
+                      )),
+                  SizedBox(height: 20),
+                  /*Tres botones de filtro*/
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _filtroActual = 'Todos';
+                            });
+                          },
+                          child: Text('Todos', style: TextStyle(color: Colors.white)),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _filtroActual = 'Rental Income';
+                            });
+                          },
+                          child: Text('Rental Income', style: TextStyle(color: Colors.white)),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _filtroActual = 'Universidad';
+                            });
+                          },
+                          child: Text('Universidad', style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text('Transacciones',
+                      style: TextStyle(
+                        fontSize: 16,
+                      )),
+                  SizedBox(height: 20),
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      children: transaccionesFiltradas.map((transaccion) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: GestureDetector(
+                            child: TransactionItem(
+                              Transaccion: transaccion["Transaccion"],
+                              TipoTransaccion: transaccion["TipoTransaccion"],
+                              monto: transaccion["monto"],
+                              fecha: transaccion["fecha"],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ), 
+                ],
+              )
+          )
         ],
       ),
     );

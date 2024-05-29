@@ -11,8 +11,8 @@ class TransactionDetailsScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromRGBO(89, 134, 223, 1),
-                    Color.fromRGBO(177, 86, 168, 1),
+                    Color(0xFF5986DF),
+                    Color(0xFFB156A8),
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,

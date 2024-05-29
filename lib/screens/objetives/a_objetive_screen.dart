@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'package:mycash_front/screens/objetives/b_create_objetive_screen.dart';
+import 'package:mycash_front/screens/objetives/objetivos_viewmodel.dart';
+import 'package:mycash_front/screens/objetives/b_objective_configuration_screen.dart';
+import 'package:mycash_front/screens/objetives/c_detalle_objetivo_screen.dart';
 
 class ObjetiveScreen extends StatefulWidget {
-  const ObjetiveScreen({super.key});
+  const ObjetiveScreen({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -13,71 +16,124 @@ class ObjetiveScreen extends StatefulWidget {
 class _ObjetiveScreenState extends State<ObjetiveScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [ 
-        ClipRRect(
-          borderRadius:
-              BorderRadius.circular(10),
-          child: Container(
-            width: double.infinity, // Full width of the screen
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromRGBO(89, 134, 223, 1),
-                  Color.fromRGBO(177, 86, 168, 1)
-                  ],
+    return Consumer<ObjetivosViewModel>(
+      builder: (context, viewModel, child) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Center(
+              child: Text(
+                'Objetivos', 
+                style: TextStyle(
+                  color: Colors.white, 
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            child: const Column(
-              children: [
-                SizedBox(height: 16), // Add spacing
-                Text(
-                  'Objetivos',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 16), // Add spacing
-              ]
-            )
-          ),
-        ),
-        const SizedBox(height: 16), // Add spacing
-
-        Center(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.zero,
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateObjetiveScreen()
-                  ),
-                );
-            },
-            child: Ink(
+            centerTitle: true, // Esto centra el título horizontalmente
+            toolbarHeight: 120.0,
+            flexibleSpace: Container(
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(80.0)),
-                gradient: LinearGradient(colors: [Color(0xFF9C42C6), Color(0xFFE38466)],),
-              ),
-              child:Container(
-                constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0), // min sizes for Material buttons
-                alignment: Alignment.center,
-                child: const Text(
-                  'Siguiente',
-                textAlign: TextAlign.center,
+                gradient: LinearGradient(
+                  colors: [Color(0xFF5986DF), Color(0xFFB156A8)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
             ),
           ),
-        ),
-      ]
+          body: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: 
+            Column(
+              children: [
+                Expanded(
+                  child: viewModel.objetivos.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'No tienes ningún objetivo',
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: viewModel.objetivos.length,
+                        itemBuilder: (context, index) {
+                          final objetivo = viewModel.objetivos[index];
+                          return Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: objetivo.color,
+                                child: Icon(
+                                  objetivo.icono,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              title: Text(objetivo.nombre),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${objetivo.montoAhorrado} / ${objetivo.cantidadObjetivo}'),
+                                  LinearProgressIndicator(
+                                    value: objetivo.montoAhorrado / objetivo.cantidadObjetivo,
+                                    backgroundColor: Colors.white,
+                                    valueColor: AlwaysStoppedAnimation<Color>(objetivo.color),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetalleObjetivoScreen(objetivo: objetivo),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CrearObjetivoScreen(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80.0),
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF9C42C6), Color(0xFFE38466)],
+                      ),
+                      borderRadius: BorderRadius.circular(80.0),
+                    ),
+                    child: Container(
+                      constraints: const BoxConstraints(minWidth: 80.0, minHeight: 40.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Crear nuevo objetivo',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          )
+        );
+      }
     );
   }
 }

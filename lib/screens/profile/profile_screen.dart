@@ -11,9 +11,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
+        //ClipRRect(
+          //borderRadius: BorderRadius.circular(10),
+          //child: 
+          Container(
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -52,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-        ),
+        //),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
