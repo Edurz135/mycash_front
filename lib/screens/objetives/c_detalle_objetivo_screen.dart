@@ -16,6 +16,7 @@ class DetalleObjetivoScreen extends StatefulWidget {
 }
 
 class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
+
   void _agregarAhorro() async {
     final TextEditingController _controller = TextEditingController();
     double? monto;
@@ -89,14 +90,34 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.objetivo.nombre),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          widget.objetivo.nombre, 
+          style: const TextStyle(
+            color: Colors.white, 
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true, // Esto centra el título horizontalmente
+        toolbarHeight: 120.0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF5986DF), Color(0xFFB156A8)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             SizedBox(
-              height: 300, // Ajusta según sea necesario
+              height: 350, // Ajusta según sea necesario
               child: Stack(
                 children: [
                   PieChart(
@@ -116,7 +137,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                         ),
                       ],
                       sectionsSpace: 0,
-                      centerSpaceRadius: 80, // Ajusta el tamaño del centro
+                      centerSpaceRadius: 100, // Ajusta el tamaño del centro
                     ),
                     swapAnimationDuration: Duration(milliseconds: 150), // Animación al interactuar
                     swapAnimationCurve: Curves.linear, // Curva de la animación al interactuar
@@ -128,7 +149,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                         const Text(
                           'Monto ahorrado',
                           style: TextStyle(
-                            color: Colors.black, // Cambiar color del texto central
+                            color: Colors.white, // Cambiar color del texto central
                             fontSize: 16, // Ajusta el tamaño del texto central
                             fontWeight: FontWeight.bold,
                           ),
@@ -136,9 +157,8 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                         Text(
                           'S/.${widget.objetivo.montoAhorrado.toStringAsFixed(2)} / S/.${widget.objetivo.cantidadObjetivo.toStringAsFixed(2)}',
                           style: const TextStyle(
-                            color: Colors.black, // Cambiar color del texto central
+                            color: Colors.white, // Cambiar color del texto central
                             fontSize: 14, // Ajusta el tamaño del texto central
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -168,14 +188,57 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                 Text('Faltante'),
               ],
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _agregarAhorro,
-              child: Text('Agregar Ahorros'),
+              onPressed:_agregarAhorro,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(80.0),
+                ),
+                padding: EdgeInsets.zero,
+              ),
+              child: Ink(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF9C42C6), Color(0xFFE38466)],
+                  ),
+                  borderRadius: BorderRadius.circular(80.0),
+                ),
+                child: Container(
+                  constraints: const BoxConstraints(minWidth: 20.0, minHeight: 40.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Agregar ahorro',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => _eliminarObjetivo(context),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red), // Cambia el color del botón a rojo
-              child: Text('Eliminar Objetivo'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(80.0),
+                ),
+                padding: EdgeInsets.zero,
+              ),
+              child: Ink(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color.fromARGB(255, 236, 3, 3), Color.fromARGB(255, 0, 0, 0)],
+                  ),
+                  borderRadius: BorderRadius.circular(80.0),
+                ),
+                child: Container(
+                  constraints: const BoxConstraints(minWidth: 20.0, minHeight: 40.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Eliminar objetivo',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

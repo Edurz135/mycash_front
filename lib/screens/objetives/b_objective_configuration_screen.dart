@@ -36,7 +36,7 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'Objetivos', 
+          'Crear Objetivo', 
           style: TextStyle(
             color: Colors.white, 
             fontSize: 24,
