@@ -10,7 +10,7 @@ class APIConfig {
         break;
       case Environment.development:
         baseURL = 'http://10.0.2.2:3000/api/';
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE1Nzk2NTgxfQ.KTFx3oyZcCXadg6z3ObMRuAQklP_1dHPMzw5xRRjz4g";
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE3MTg2MzE3fQ.JeWe0mN26B9GV6nTwnojVs5Yro8RphV6_ryKLSvNM5s";
         break;
     }
   }

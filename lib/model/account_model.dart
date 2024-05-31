@@ -24,4 +24,20 @@ class Account {
     required this.updatedAt,
     required this.currencyType,
   });
+
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(
+      id: json['id'],
+      name: json['name'],
+      type: json['type'],
+      balance: json['balance'].toDouble(),
+      userId: json['userId'],
+      accountTypeId: json['accountTypeId'],
+      currencyTypeId: json['currencyTypeId'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      currencyType: CurrencyType.fromJson(json['CurrencyType']),
+    );
+  }
+
 }

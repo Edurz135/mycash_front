@@ -16,4 +16,17 @@ class CurrencyType {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  factory CurrencyType.fromJson(Map<String, dynamic> json) {
+    return CurrencyType(
+      id: json['id'],
+      name: json['name'],
+      shortName: json['short_name'],
+      symbol: json['symbol'],
+      baseExchangeRate: json['base_exchange_rate'].toDouble(),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
+
 }

@@ -1,18 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mycash_front/model/account_model.dart';
 import 'package:mycash_front/services/api_config.dart';
 
 class AccountService {
-  static Future<List<Map<String, dynamic>>> fetchAccounts() async {
+  static Future<List<Account>> fetchAccounts() async {
     final url = Uri.parse('${APIConfig.baseURL}accounts/');
+    print("Calling API: GET $url");
     final response = await http.get(
       url,
       headers: {'Authorization': 'Bearer ${APIConfig.token}'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      return data.cast<Map<String, dynamic>>();
+      print("API Response: ${response.body}");
+      return data.map((json) => Account.fromJson(json)).toList();
     } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
       throw Exception('Failed to load accounts');
     }
   }
@@ -23,6 +27,7 @@ class AccountService {
     int currencyTypeId,
   ) async {
     final url = Uri.parse('${APIConfig.baseURL}accounts/');
+    print("Calling API: POST $url");
     final response = await http.post(
       url,
       headers: {
@@ -35,18 +40,25 @@ class AccountService {
         'currencyTypeId': currencyTypeId,
       }),
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      print("API Response: ${response.body}");
+    } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
       throw Exception('Failed to create account');
     }
   }
 
   static Future<void> deleteAccount(int id) async {
     final url = Uri.parse('${APIConfig.baseURL}accounts/$id');
+    print("Calling API: DELETE $url");
     final response = await http.delete(
       url,
       headers: {'Authorization': 'Bearer ${APIConfig.token}'},
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      print("API Response: ${response.body}");
+    } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
       throw Exception('Failed to delete account');
     }
   }

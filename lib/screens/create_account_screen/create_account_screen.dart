@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mycash_front/components/creditcard_item.dart';
+import 'package:mycash_front/model/account_model.dart';
+import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 
 class CreateAccountScreen extends StatelessWidget {
-  final Function(String name, int currencyTypeId, double balance) createAccount;
-  final List<Map<String, dynamic>> currencyTypes;
+  final HomeScreenController controller;
 
-  const CreateAccountScreen(
-      {Key? key, required this.currencyTypes, required this.createAccount})
+  const CreateAccountScreen({Key? key, required this.controller})
       : super(key: key);
 
   @override
@@ -36,7 +37,8 @@ class CreateAccountScreen extends StatelessWidget {
               const CreditCardItem(),
               const SizedBox(height: 20),
               CreateAccountForm(
-                  currencyTypes: currencyTypes, createAccount: createAccount)
+                controller: controller,
+              )
             ],
           ),
         ),
@@ -46,35 +48,25 @@ class CreateAccountScreen extends StatelessWidget {
 }
 
 class CreateAccountForm extends StatefulWidget {
-  final List<Map<String, dynamic>> currencyTypes;
-  final Function(String name, int currencyTypeId, double balance) createAccount;
-
-  const CreateAccountForm(
-      {super.key, required this.currencyTypes, required this.createAccount});
+  final HomeScreenController controller;
+  const CreateAccountForm({super.key, required this.controller});
 
   @override
   CreateAccountFormState createState() {
-    return CreateAccountFormState(
-        currencyTypes: currencyTypes, createAccount: createAccount);
+    return CreateAccountFormState(controller: controller);
   }
 }
 
 class CreateAccountFormState extends State<CreateAccountForm> {
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
-  final List<Map<String, dynamic>> currencyTypes;
-  final Function(String name, int currencyTypeId, double balance) createAccount;
 
   String _name = '';
-  int _currencyTypeId = 0;
+  int? _currencyTypeId;
   double _balance = 0.0;
 
-  CreateAccountFormState(
-      {required this.currencyTypes, required this.createAccount});
+  HomeScreenController controller;
+
+  CreateAccountFormState({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -122,45 +114,44 @@ class CreateAccountFormState extends State<CreateAccountForm> {
             style: TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 8),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: DropdownButtonFormField<Map<String, dynamic>>(
-              value: currencyTypes.isNotEmpty
-                  ? currencyTypes[0]
-                  : null, // Set initial value if available
-              decoration: const InputDecoration(
-                border: InputBorder.none,
+          Obx(() {
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              items: currencyTypes
-                  .map<DropdownMenuItem<Map<String, dynamic>>>(
-                      (currency) => DropdownMenuItem<Map<String, dynamic>>(
-                            value: currency,
-                            child: Text(
-                              '${currency['short_name']} - ${currency['name']}',
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ))
-                  .toList(),
-              dropdownColor: Colors.white,
-              onChanged: (value) {
-                // Update _currencyTypeId when an item is selected
-                setState(() {
-                  _currencyTypeId = value!['id'] as int;
-                });
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Por favor seleccione una moneda'; // Error message if no item is selected
-                }
-                return null; // Return null if validation succeeds
-              },
-            ),
-          ),
+              child: DropdownButtonFormField<int>(
+                value: _currencyTypeId,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                items: controller.currencyTypes
+                    .map<DropdownMenuItem<int>>(
+                        (currency) => DropdownMenuItem<int>(
+                              value: currency.id,
+                              child: Text(
+                                '${currency.shortName} - ${currency.name}',
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ))
+                    .toList(),
+                dropdownColor: Colors.white,
+                onChanged: (value) {
+                  setState(() {
+                    _currencyTypeId = value!;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Por favor seleccione una moneda';
+                  }
+                  return null;
+                },
+              ),
+            );
+          }),
           const SizedBox(height: 20),
           const Text(
             'Importe',
@@ -220,7 +211,9 @@ class CreateAccountFormState extends State<CreateAccountForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  createAccount(_name, _currencyTypeId, _balance);
+                  controller.createAccount(
+                      _name, _currencyTypeId as int, _balance);
+                  // createAccount(_name, _currencyTypeId, _balance);
                   Navigator.of(context).pop();
                 }
               },
