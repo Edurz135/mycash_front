@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mycash_front/screens/objetives/objetivos_viewmodel.dart';
 import 'package:mycash_front/services/api_config.dart';
 import 'package:mycash_front/components/BottomNavBar.dart';
+import 'package:mycash_front/screens/login_account/login_page.dart';
 
 void main() {
   APIConfig.setEnvironment(
