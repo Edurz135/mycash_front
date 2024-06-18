@@ -24,7 +24,7 @@ class MainLayout extends StatelessWidget {
           brightness: Brightness.dark,
           fontFamily: 'Poppins',
         ),
-        home: BottomNavBar(),
+        home: LoginPage(),
       )
     );
   }

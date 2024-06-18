@@ -36,11 +36,18 @@ class LoginController extends GetxController {
     if (found) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => BottomNavBar()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else {
       print('error: usuario incorrecto');
     }
 
+  }
+
+  void goToSignIn(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignInPage()),
+    );
   }
 }
