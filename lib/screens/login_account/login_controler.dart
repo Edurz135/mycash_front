@@ -4,6 +4,7 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:mycash_front/model/User.dart';
 //import '../home_screen.dart';
 import 'package:mycash_front/components/BottomNavBar.dart';
+import 'package:mycash_front/screens/signin_account/signin_page.dart';
 
 class LoginController extends GetxController {
   TextEditingController userController = TextEditingController();
@@ -14,7 +15,7 @@ class LoginController extends GetxController {
       id: 1,
       name: 'Jesús',
       lastname: 'Lujan',
-      email: 'chocolatada@gmail.com',
+      email: 'asdf',
       password: '1234',
       creationDate: DateTime.now(),
       modifiedDate: DateTime.now(),
@@ -36,7 +37,7 @@ class LoginController extends GetxController {
     if (found) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => BottomNavBar()),
       );
     } else {
       print('error: usuario incorrecto');

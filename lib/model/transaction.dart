@@ -24,7 +24,7 @@ Transaction({
     required this.currencyTypeId,
     required this.exchange_rate,
     this.accountId,
-    required this.currencyType;
+    required this.currencyType
 });
 
 factory Transaction.fromJson(Map<String,dynamic> json){

@@ -20,9 +20,9 @@ class Category{
     factory Category.fromJson(Map<String,dynamic> json){
         return Category(
             id: json['id'],
-            name: json['name'].
-            description: json['description']
-            icon_name: json['icon_name']
+            name: json['name'],
+            description: json['description'],
+            icon_name: json['icon_name'],
             creationDate: DateTime.parse(json['creationDate']),
             modifiedDate: DateTime.parse(json['modifiedDate']),
             deletedDate: DateTime.parse(json['deletedDate']),
