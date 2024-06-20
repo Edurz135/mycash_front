@@ -28,10 +28,14 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  'Tiene que aceptar los Términos y Condiciones',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16.0),
+                'Tiene que aceptar los Términos y Condiciones',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black,
                 ),
+                ),
+
                 SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
@@ -65,7 +69,8 @@ class _SignInPageState extends State<SignInPage> {
                 Text(
                   'Usuario creado exitosamente',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0,
+                  color: Colors.black,),
                 ),
                 SizedBox(height: 20.0),
                 ElevatedButton(
@@ -112,165 +117,173 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _form(BuildContext context, bool isKeyBoardOpen) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(
-        MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
-        MediaQuery.of(context).size.width * (isKeyBoardOpen ? 0.1 : 0.3), // Margen superior
-        MediaQuery.of(context).size.width * 0.1, // Margen derecho
-        MediaQuery.of(context).size.width * 0.1, // Margen inferior
-      ),
-      padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Correo Electrónico',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              height: 3,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
+  return Container(
+    margin: EdgeInsets.fromLTRB(
+      MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
+      MediaQuery.of(context).size.width * (isKeyBoardOpen ? 0.2 : 0.2), // Margen superior
+      MediaQuery.of(context).size.width * 0.1, // Margen derecho
+      MediaQuery.of(context).size.width * 0.0, // Margen inferior
+    ),
+    //padding: EdgeInsets.all(10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Correo Electrónico',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            height: 3,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          TextField(
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              contentPadding: EdgeInsets.all(7),
-            ),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          Text(
-            'Apellidos',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              height: 3,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           ),
-          TextField(
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              contentPadding: EdgeInsets.all(7),
-            ),
+        ),
+        Text(
+          'Apellidos',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            height: 3,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          Text(
-            'Correo electrónico',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              height: 3,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          TextField(
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 255, 255, 255),
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              contentPadding: EdgeInsets.all(7),
-            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           ),
-          Text(
-            'Contraseña',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              height: 3,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
+        ),
+        Text(
+          'Correo electrónico',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            height: 3,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          TextField(
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              contentPadding: EdgeInsets.all(7),
-            ),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          Text(
-            'Confirmar contraseña',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              height: 3,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           ),
-          TextField(
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              contentPadding: EdgeInsets.all(7),
-            ),
+        ),
+        Text(
+          'Contraseña',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            height: 3,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
-          _termsAndConditions(), // Añadir la casilla de términos y condiciones aquí
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () {
-                if (_termsAccepted) {
-                  control.createAccount();
-                  _UserCreatedSuccess();
-                } else {
-                  _showTermsDialog();
-                }
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.purple,
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          ),
+        ),
+        Text(
+          'Confirmar contraseña',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            height: 3,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+        ),
+        TextField(
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              _termsAndConditions(),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () {
+                    if (_termsAccepted) {
+                      control.createAccount();
+                      _UserCreatedSuccess();
+                    } else {
+                      _showTermsDialog();
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: Text(
+                    'Registrar',
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ),
-              child: Text(
-                'Registrar',
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  fontSize: 20,
-                ),
-              ),
-            ),
+              _LoginUser(context),
+            ],
           ),
-          _LoginUser(context),
-        ],
-      ),
+        ),
+      ],
+    ),
     );
   }
+
 
   Widget _LoginUser(BuildContext context) {
     return Center(
