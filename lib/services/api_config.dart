@@ -14,6 +14,10 @@ class APIConfig {
         break;
     }
   }
+
+  static void setToken(String token) {
+    token = token;
+  }
 }
 
 enum Environment {
