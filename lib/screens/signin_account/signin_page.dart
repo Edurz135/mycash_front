@@ -9,7 +9,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  SignInControler control = Get.put(SignInControler());
+  SignInController control = Get.put(SignInController());
   bool _termsAccepted = false; // Estado del checkbox
 
   void _showTermsDialog() {
@@ -28,56 +28,19 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                'Tiene que aceptar los Términos y Condiciones',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.black,
+                  'Tiene que aceptar los Términos y Condiciones',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  ),
                 ),
-                ),
-
                 SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: Text('Cerrar'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _UserCreatedSuccess() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'Usuario creado exitosamente',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16.0,
-                  color: Colors.black,),
-                ),
-                SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Aceptar'),
                 ),
               ],
             ),
@@ -117,173 +80,177 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _form(BuildContext context, bool isKeyBoardOpen) {
-  return Container(
-    margin: EdgeInsets.fromLTRB(
-      MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
-      MediaQuery.of(context).size.width * (isKeyBoardOpen ? 0.2 : 0.2), // Margen superior
-      MediaQuery.of(context).size.width * 0.1, // Margen derecho
-      MediaQuery.of(context).size.width * 0.0, // Margen inferior
-    ),
-    //padding: EdgeInsets.all(10),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Correo Electrónico',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            height: 3,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-        ),
-        TextField(
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+    return Container(
+      margin: EdgeInsets.fromLTRB(
+        MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
+        MediaQuery.of(context).size.width * (isKeyBoardOpen ? 0.2 : 0.2), // Margen superior
+        MediaQuery.of(context).size.width * 0.1, // Margen derecho
+        MediaQuery.of(context).size.width * 0.0, // Margen inferior
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Correo Electrónico',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              height: 3,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           ),
-        ),
-        Text(
-          'Apellidos',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            height: 3,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-        ),
-        TextField(
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+          TextField(
+            controller: control.emailController,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          ),
-        ),
-        Text(
-          'Correo electrónico',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            height: 3,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-        ),
-        TextField(
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           ),
-        ),
-        Text(
-          'Contraseña',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            height: 3,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-        ),
-        TextField(
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+          Text(
+            'Nombres',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              height: 3,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           ),
-        ),
-        Text(
-          'Confirmar contraseña',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            height: 3,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-        ),
-        TextField(
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.black),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+          TextField(
+            controller: control.nombresController,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            ),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Column(
-            children: [
-              _termsAndConditions(),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () {
-                    if (_termsAccepted) {
-                      control.createAccount();
-                      _UserCreatedSuccess();
-                    } else {
-                      _showTermsDialog();
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+          Text(
+            'Apellidos',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              height: 3,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          ),
+          TextField(
+            controller: control.apellidoController,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            ),
+          ),
+          Text(
+            'Contraseña',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              height: 3,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          ),
+          TextField(
+            controller: control.pws1Controller,
+            obscureText: true,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            ),
+          ),
+          Text(
+            'Confirmar contraseña',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              height: 3,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          ),
+          TextField(
+            controller: control.pws2Controller,
+            obscureText: true,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Column(
+              children: [
+                _termsAndConditions(),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {
+                      if (_termsAccepted) {
+                        control.createAccount(context);
+                      } else {
+                        _showTermsDialog();
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    'Registrar',
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 18,
+                    child: Text(
+                      'Registrar',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              _LoginUser(context),
-            ],
+                _LoginUser(context),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
     );
   }
-
 
   Widget _LoginUser(BuildContext context) {
     return Center(
