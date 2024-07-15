@@ -4,21 +4,59 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-class Data{
-  static List<Map<String, String>> Ingresos =[
-    {'Titulo': 'Compras', 'Monto':'S/'+'1.400'},
-    {'Titulo': 'Banco', 'Monto':'S/'+'1.400'},
-    {'Titulo': 'Educacion', 'Monto':'S/'+'1.400'},
-    {'Titulo': 'Guardados', 'Monto':'S/'+'1.400'},
-    {'Titulo': 'Academia', 'Monto':'S/'+'5.400'},
-  ];
+class Data {
+  static List<Map<String, dynamic>> Ingresos = [];
+  static List<Map<String, dynamic>> Egresos = [];
 
-  static List<Map<String, String>> Egresos = [
-    {'Titulo': 'Renta', 'Monto': 'S/'+'900'},
-    {'Titulo': 'Servicios', 'Monto': 'S/'+'300'},
-    {'Titulo': 'Transporte', 'Monto': 'S/'+'200'},
-    {'Titulo': 'Comida', 'Monto': 'S/'+'400'},
-  ];
+  static Future<void> fetchIngresos() async {
+    try {
+      final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/incomeSum/ByCategory/2'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        Ingresos = data.map((item) {
+          return {
+            'Titulo': item['Category']['name'] ?? 'N/A',
+            'Monto': 'S/' + (item['total'] ?? 0).toString(),
+          };
+        }).toList();
+
+        print('Ingresos cargados: $Ingresos');
+      } else {
+        print('Error en la solicitud de ingresos: ${response.statusCode}');
+        throw Exception('Error al cargar los ingresos');
+      }
+    } catch (e) {
+      print('Error de conexión al cargar ingresos: $e');
+      throw Exception('Error de conexión: $e');
+    }
+  }
+
+  static Future<void> fetchEgresos() async {
+    try {
+      final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/expenseSum/ByCategory/2'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        Egresos = data.map((item) {
+          return {
+            'Titulo': item['Category']['name'] ?? 'N/A',
+            'Monto': 'S/' + (item['total'] ?? 0).toString(),
+          };
+        }).toList();
+
+        print('Egresos cargados: $Egresos');
+      } else {
+        print('Error en la solicitud de egresos: ${response.statusCode}');
+        throw Exception('Error al cargar los egresos');
+      }
+    } catch (e) {
+      print('Error de conexión al cargar egresos: $e');
+      throw Exception('Error de conexión: $e');
+    }
+  }
 
   static List<ChartData> resultados = [
     ChartData("ingresos", 3000, Colors.blue),
@@ -56,4 +94,3 @@ class Data{
     }
   }
 }
-

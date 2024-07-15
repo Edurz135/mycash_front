@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycash_front/components/stacked_line_sync_fusion_content.dart';
 import 'package:mycash_front/data/data.dart';
-
 class StatisticsScreen extends StatefulWidget {
   @override
   _StatisticsScreenState createState() => _StatisticsScreenState();
@@ -101,6 +100,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         setState(() {
           selectedCategory = category;
         });
+        if (category == 'Ingresos') {
+          Data.fetchIngresos();
+        } else {
+          Data.fetchEgresos();
+        }
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -123,7 +127,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   }
 
   List<Widget> _buildCategoryBlocks() {
-    List<Map<String, String>> data =
+    List<Map<String, dynamic>> data =
         selectedCategory == 'Ingresos' ? Data.Ingresos : Data.Egresos;
 
     if (data.isEmpty) {
@@ -145,8 +149,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildCategoryBlock(data[i]),
-              _buildCategoryBlock(data[i + 1]),
+              _buildCategoryBlock(data[i].map((k, v) => MapEntry(k.toString(), v.toString()))),
+              _buildCategoryBlock(data[i + 1].map((k, v) => MapEntry(k.toString(), v.toString()))),
             ],
           ),
         );
@@ -156,7 +160,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildCategoryBlock(data[i]),
+              _buildCategoryBlock(data[i].map((k, v) => MapEntry(k.toString(), v.toString()))),
             ],
           ),
         );
