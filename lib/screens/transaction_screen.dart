@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mycash_front/components/transaction_item.dart';
+import 'package:mycash_front/model/transaction.dart';
+import 'package:mycash_front/screens/transaction_screen_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:mycash_front/screens/transaction_detail_screen.dart';
 
 class TransactionScreen extends StatefulWidget {
   @override
@@ -8,43 +13,30 @@ class TransactionScreen extends StatefulWidget {
 
 class _TransactionScreenState extends State<TransactionScreen> {
   String _filtroActual = 'Todos';
+  TransaccionScreenController controller = Get.put(TransaccionScreenController());
 
-  List<Map<String, dynamic>> transacciones = [
-    {
-      "Transaccion": "Rental Income",
-      "TipoTransaccion": "Débito",
-      "monto": 6500.0,
-      "fecha": '14 de diciembre 2023'
-    },
-    {
-      "Transaccion": "Universidad",
-      "TipoTransaccion": "Crédito",
-      "monto": 9000.0,
-      "fecha": '18 de diciembre 2024'
-    },
-    {
-      "Transaccion": "Compra",
-      "TipoTransaccion": "Débito",
-      "monto": 3000.0,
-      "fecha": '20 de diciembre 2024'
-    },
-    // Añade más transacciones según sea necesario
-  ];
+  @override
+  void initState(){
+    super.initState();
+    controller.fetchCategories();
+    controller.fetchTransactions();
+  }
 
-  List<Map<String, dynamic>> get transaccionesFiltradas {
+
+  List<Transaction> get transaccionesFiltradas {
     if (_filtroActual == 'Todos') {
-      return transacciones;
+      return controller.transaccions;
     } else {
-      return transacciones
-          .where((transaccion) => transaccion['Transaccion'] == _filtroActual)
+      return controller.transaccions
+          .where((transaccion) => transaccion.type == _filtroActual)
           .toList();
     }
   }
 
   double _calcularTotalSaldo() {
     double total = 0;
-    for (var transaccion in transacciones) {
-      total += transaccion['monto'];
+    for (var transaccion in controller.transaccions) {
+      total += transaccion.amount;
     }
     return total;
   }
@@ -170,14 +162,22 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     height: MediaQuery.of(context).size.height,
                     child: Column(
                       children: transaccionesFiltradas.map((transaccion) {
+                        final category = controller.getCategoryNameById(transaccion.categoryId);
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: GestureDetector(
+                            onTap: () async {
+                          final res = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TransactionDetailsScreen(transaction: transaccion, category: category)),
+                            );
+                          },
                             child: TransactionItem(
-                              Transaccion: transaccion["Transaccion"],
-                              TipoTransaccion: transaccion["TipoTransaccion"],
-                              monto: transaccion["monto"],
-                              fecha: transaccion["fecha"],
+                              Transaccion: transaccion.type,
+                              TipoTransaccion: category,
+                              monto: transaccion.amount,
+                              fecha: DateFormat('dd/MM/yyyy HH:mm:ss').format(transaccion.createdAt),
                             ),
                           ),
                         );
