@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mycash_front/model/User.dart';
 import 'package:mycash_front/services/api_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   
@@ -10,8 +11,8 @@ class AuthService {
     String last_name,
     String email, 
     String password,
-    ) async {
-    final url = Uri.parse('${APIConfig.baseURL}signup/');
+  ) async {
+    final url = Uri.parse('${APIConfig.baseURL}auth/signup');
 
     Map<String, dynamic> requestBody = {
       'first_name': first_name,
@@ -23,26 +24,24 @@ class AuthService {
     final response = await http.post(
       url,
       headers: {
-        'Authorization': 'Bearer ${APIConfig.token}',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(requestBody),
     );
 
-    if (response.statusCode == 500) {
-      throw Exception('Failed to create user: ${response.body}');
-    } else {
+    if (response.statusCode == 200) {
       return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to create user: ${response.body}');
     }
   }
 
-/*
-  Future<Map<String, dynamic>> signIn(String email, String password) async {
-    final url = Uri.parse('${APIConfig.baseURL}signin/');
+
+  static Future<Map<String, dynamic>> signIn(String email, String password) async {
+    final url = Uri.parse('${APIConfig.baseURL}auth/signin');
     final response = await http.post(
       url,
       headers: {
-        'Authorization': 'Bearer ${APIConfig.token}',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
@@ -60,9 +59,12 @@ class AuthService {
       prefs.setStringList('roles', List<String>.from(data['roles']));
       return data;
     } else {
-      throw Exception('Failed to sign in');
+      // Log the response for debugging
+      print('Error response: ${response.statusCode} - ${response.body}');
+      throw Exception('Failed to sign in: ${response.body}');
     }
   }
-*/
+
+
 
 }

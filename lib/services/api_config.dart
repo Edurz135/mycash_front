@@ -1,5 +1,5 @@
 class APIConfig {
-  static String baseURL = "";
+  static String baseURL = "http://10.0.2.2:3000/api/";
   static String token = "";
 
   static void setEnvironment(Environment env) {
