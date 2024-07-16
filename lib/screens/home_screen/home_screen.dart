@@ -7,6 +7,7 @@ import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 import 'package:mycash_front/screens/transaction_detail_screen.dart';
 import 'package:mycash_front/screens/income_screen.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     controller.fetchAccounts();
     controller.fetchCurrencyTypes();
-    // _fetchAccounts();
-    // _fetchCurrencyTypes();
+    controller.fetchTransactions(); // Fetch transactions
+    controller.fetchCategories(); // Fetch categories
   }
 
   @override
@@ -164,76 +165,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              // Add more content for operations here if needed
               const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TransactionDetailsScreen()),
+              Obx(() {
+                return Column(
+                  children: controller.transaccions.map((transaction) {
+                    final category = controller.getCategoryNameById(transaction.categoryId);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TransactionDetailsScreen()),
+                          );
+                        },
+                        child: TransactionItem(
+                          Transaccion: transaction.type,
+                          TipoTransaccion: category,
+                          monto: transaction.amount,
+                          fecha: DateFormat('dd/MM/yyyy HH:mm:ss').format(transaction.createdAt)
+                        ),
+                      ),
                     );
-                  },
-                  child: TransactionItem(
-                      Transaccion: "Rental Income",
-                      TipoTransaccion: "Débito",
-                      monto: 6500,
-                      fecha: '14 de diciembre 2023'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TransactionDetailsScreen()),
-                    );
-                  },
-                  child: TransactionItem(
-                      Transaccion: "Universidad",
-                      TipoTransaccion: "Crédito",
-                      monto: 9000,
-                      fecha: '18 de diciembre 2024'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TransactionDetailsScreen()),
-                    );
-                  },
-                  child: TransactionItem(
-                      Transaccion: "Rental Income",
-                      TipoTransaccion: "Débito",
-                      monto: 6500,
-                      fecha: '14 de diciembre 2023'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TransactionDetailsScreen()),
-                    );
-                  },
-                  child: TransactionItem(
-                      Transaccion: "Universidad",
-                      TipoTransaccion: "Crédito",
-                      monto: 9000,
-                      fecha: '18 de diciembre 2024'),
-                ),
-              ),
+                  }).toList(),
+                );
+              }),
             ]))
       ],
     ));

@@ -1,45 +1,51 @@
-import 'package:mycash_front/model/currencyType_model.dart';
+class Transaction {
+  final int id;
+  final String type;
+  final double amount;
+  final double? exchangeRate;
+  final int categoryId;
+  final int accountId;
+  final int currencyTypeId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-class Transaction{
-int id;
-String type;
-double amount;
-DateTime creationDate;
-DateTime modifiedDate;
-DateTime deletedDate;
-int? categoryId;
-int currencyTypeId;
-double exchange_rate;
-int? accountId;
-CurrencyType currencyType;
-
-Transaction({
+  Transaction({
     required this.id,
     required this.type,
     required this.amount,
-    required this.creationDate,
-    required this.modifiedDate,
-    required this.deletedDate,
-    this.categoryId,
+    this.exchangeRate,
+    required this.categoryId,
+    required this.accountId,
     required this.currencyTypeId,
-    required this.exchange_rate,
-    this.accountId,
-    required this.currencyType
-});
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-factory Transaction.fromJson(Map<String,dynamic> json){
+  factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-        id: json['id'],
-        type : json['type'],
-        amount: json['amount'],
-        creationDate: DateTime.parse(json['creationDate']),
-        modifiedDate: DateTime.parse(json['modifiedDate']),
-        deletedDate: DateTime.parse(json['deletedDate']),
-        categoryId: json['categoryId'],
-        currencyTypeId: json['currencyTypeId'],
-        exchange_rate: json['exchange_rate'],
-        accountId: json['accountId'],
-        currencyType: CurrencyType.fromJson(json['CurrencyType']),
+      id: json['id'],
+      type: json['type'], // Esto puede ser nulo
+      amount: json['amount'].toDouble(),
+      exchangeRate: json['exchange_rate'].toDouble(), // Esto puede ser nulo
+      categoryId: json['categoryId'],
+      accountId: json['accountId'],
+      currencyTypeId: json['currencyTypeId'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
-}
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'amount': amount,
+      'exchange_rate': exchangeRate,
+      'categoryId': categoryId,
+      'accountId': accountId,
+      'currencyTypeId': currencyTypeId,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
 }

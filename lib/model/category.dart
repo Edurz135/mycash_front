@@ -1,31 +1,39 @@
-class Category{
-    int id;
-    String name;
-    String description;
-    String icon_name;
-    DateTime creationDate;
-    DateTime modifiedDate;
-    DateTime deletedDate;
+class Category {
+  final int id;
+  final String name;
+  final String description;
+  final String iconName;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-    Category({
-        required this.id,
-        required this.name,
-        required this.description,
-        required this.icon_name,
-        required this.creationDate,
-        required this.modifiedDate,
-        required this.deletedDate,
-    });
+  Category({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.iconName,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-    factory Category.fromJson(Map<String,dynamic> json){
-        return Category(
-            id: json['id'],
-            name: json['name'],
-            description: json['description'],
-            icon_name: json['icon_name'],
-            creationDate: DateTime.parse(json['creationDate']),
-            modifiedDate: DateTime.parse(json['modifiedDate']),
-            deletedDate: DateTime.parse(json['deletedDate']),
-        );
-    }
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      iconName: json['icon_name'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'icon_name': iconName,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
 }
