@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycash_front/screens/transaction_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mycash_front/screens/objetives/objetivos_viewmodel.dart';
 import 'package:mycash_front/services/api_config.dart';
@@ -17,7 +18,7 @@ class MainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ObjetivosViewModel(),
+      create: (context) => ObjetivosViewModel(), 
       child: MaterialApp(
         title: 'MyCash',
         theme: ThemeData(
