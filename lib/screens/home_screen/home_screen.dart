@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           final res = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => TransactionDetailsScreen(transaction: transaction)),
+                                builder: (context) => TransactionDetailsScreen(transaction: transaction, category: category)),
                           );
                         },
                         child: TransactionItem(

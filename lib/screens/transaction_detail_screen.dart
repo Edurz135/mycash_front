@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:mycash_front/model/transaction.dart'; // Importa tu modelo de transacción
 
 class TransactionDetailsScreen extends StatelessWidget {
-  final Transaction transaction; // Define la variable para la transacción
+  final Transaction transaction;
+  final String category; // Define la variable para la transacción
 
-  TransactionDetailsScreen({required this.transaction}); // Constructor para recibir la transacción
+  TransactionDetailsScreen({required this.transaction, required this.category}); // Constructor para recibir la transacción
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(width:90, height:25),
                 Text(
-                  transaction.type,
+                  category,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold
