@@ -4,13 +4,17 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class Data {
   static List<Map<String, dynamic>> Ingresos = [];
   static List<Map<String, dynamic>> Egresos = [];
 
   static Future<void> fetchIngresos() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/incomeSum/ByCategory/2'));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int userId = prefs.getInt('id') ?? 0;
+      
+      final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/incomeSum/ByCategory/$userId'));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -35,7 +39,11 @@ class Data {
 
   static Future<void> fetchEgresos() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/expenseSum/ByCategory/2'));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int userId = prefs.getInt('id') ?? 0;
+
+
+      final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/expenseSum/ByCategory/$userId'));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -66,8 +74,10 @@ class Data {
   static List<DatetimeData> resultadosConTiempo = [];
   static Future<void> fetchData() async {
     try {
-      final ingresosResponse = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/incomeSum/ByMonth/2'));
-      final egresosResponse = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/expenseSum/ByMonth/2'));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int userId = prefs.getInt('id') ?? 0;
+      final ingresosResponse = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/incomeSum/ByMonth/$userId'));
+      final egresosResponse = await http.get(Uri.parse('http://10.0.2.2:3000/api/transactions/expenseSum/ByMonth/$userId'));
 
       if (ingresosResponse.statusCode == 200 && egresosResponse.statusCode == 200) {
         final ingresosData = Map<String, dynamic>.from(json.decode(ingresosResponse.body));
