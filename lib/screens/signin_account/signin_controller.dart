@@ -20,25 +20,20 @@ class SignInController extends GetxController {
     String confirmPassword = pws2Controller.text;
 
     if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Passwords do not match')),
-      );
+      Get.snackbar('Error', 'Passwords do not match', snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
     try {
       final response = await AuthService.signup(firstName, lastName, email, password);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User was registered successfully!')),
-      );
+      Get.snackbar('Success', 'User was registered successfully!', snackPosition: SnackPosition.BOTTOM);
       _UserCreatedSuccess(context);
       print('CORRECTO GA');
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $error')),
-      );
+      Get.snackbar('Error', 'Error: $error', snackPosition: SnackPosition.BOTTOM);
       print('INCORRECTO PIPI');
     }
+
   }
 
   void _UserCreatedSuccess(BuildContext context) {
