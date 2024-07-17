@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/model/transaction.dart';
-import 'package:mycash_front/screens/transaction_screen_controller.dart';
+import 'package:mycash_front/screens/transaction_screen/transaction_screen_controller.dart';
 import 'package:intl/intl.dart';
-import 'package:mycash_front/screens/transaction_detail_screen.dart';
+import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
 
 class TransactionScreen extends StatefulWidget {
   @override
@@ -22,15 +22,21 @@ class _TransactionScreenState extends State<TransactionScreen> {
     controller.fetchTransactions();
   }
 
-
   List<Transaction> get transaccionesFiltradas {
+    List<Transaction> transacciones;
+
     if (_filtroActual == 'Todos') {
-      return controller.transaccions;
+      transacciones = controller.transaccions;
     } else {
-      return controller.transaccions
-          .where((transaccion) => transaccion.type == _filtroActual)
-          .toList();
+      transacciones = controller.transaccions
+        .where((transaccion) => transaccion.type == _filtroActual)
+        .toList();
     }
+
+    // Ordenar por fecha, de más reciente a más antiguo
+    transacciones.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    return transacciones;
   }
 
   double _calcularTotalSaldo() {

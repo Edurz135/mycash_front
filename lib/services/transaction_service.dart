@@ -21,5 +21,40 @@ class TransactionService{
     }
   }
 
+  static Future<void> editTransaction(Transaction transaction) async {
+    final url = Uri.parse('${APIConfig.baseURL}transactions/${transaction.id}');
+    print("Calling API: PUT $url");
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${APIConfig.token}',
+      },
+      body: json.encode(transaction.toJson()),
+    );
+    if (response.statusCode == 200) {
+      print("API Response: ${response.body}");
+    } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
+      throw Exception('Failed to edit transaction');
+    }
+  }
+
+  static Future<void> deleteTransaction(int id) async {
+    final url = Uri.parse('${APIConfig.baseURL}transactions/$id');
+    print("Calling API: DELETE $url");
+    final response = await http.delete(
+      url,
+      headers: {'Authorization': 'Bearer ${APIConfig.token}'},
+    );
+    if (response.statusCode == 200) {
+      print("API Response: ${response.body}");
+    } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
+      throw Exception('Failed to delete transaction');
+    }
+
+  }
+
   
 }

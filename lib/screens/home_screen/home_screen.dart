@@ -5,7 +5,7 @@ import 'package:mycash_front/components/operation_item.dart';
 import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
-import 'package:mycash_front/screens/transaction_detail_screen.dart';
+import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
 import 'package:mycash_front/screens/income_screen.dart';
 import 'package:intl/intl.dart';
 

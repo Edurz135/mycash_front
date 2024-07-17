@@ -1,12 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mycash_front/model/transaction.dart'; // Importa tu modelo de transacción
+import 'package:mycash_front/screens/home_screen/home_screen.dart';
+import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen_controller.dart';
 
 class TransactionDetailsScreen extends StatelessWidget {
   final Transaction transaction;
   final String category; // Define la variable para la transacción
+  TransactionDetailScreenController controller = Get.put(TransactionDetailScreenController());
+  
 
-  TransactionDetailsScreen({required this.transaction, required this.category}); // Constructor para recibir la transacción
+  TransactionDetailsScreen({
+    required this.transaction, 
+    required this.category,
+    }); // Constructor para recibir la transacción
+
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +160,9 @@ class TransactionDetailsScreen extends StatelessWidget {
                       ],
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print("Boton de editar presionado");
+                        },
                       child: const Text(
                         'Editar',
                         style: TextStyle(
@@ -183,7 +196,44 @@ class TransactionDetailsScreen extends StatelessWidget {
                       ],
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print("Boton de eliminar presionado");
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirmar Eliminación'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '¿Estás seguro de que quieres eliminar esta transacción?',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text('Monto: PEN ${transaction.amount ?? 0.00}'),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    controller.deleteTransaction(transaction.id);
+                                    Navigator.of(context).pop();
+                                    Get.back();
+                                  },
+                                  child: Text('Eliminar'),
+                                ),
+                              ],
+                            ),
+                          );
+                      },
                       child: const Text(
                         'Eliminar',
                         style: TextStyle(
