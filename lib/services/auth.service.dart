@@ -9,7 +9,7 @@ class AuthService {
   static Future<void> signup(
     String first_name,
     String last_name,
-    String email, 
+    String email,
     String password,
   ) async {
     final url = Uri.parse('${APIConfig.baseURL}auth/signup');
@@ -55,6 +55,7 @@ class AuthService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', data['accessToken']);
       prefs.setString('email', data['email']);
+      prefs.setString('name', data['name']);
       prefs.setInt('id', data['id']);
       prefs.setStringList('roles', List<String>.from(data['roles']));
       return data;

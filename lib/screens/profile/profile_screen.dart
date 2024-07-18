@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 16),
               Text('Bienvenido', textAlign: TextAlign.center, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Obx(() => Text(
-                controller.accounts.isNotEmpty ? 'User ID: ${controller.accounts[0].userId}' : 'No Accounts',
+                controller.accounts.isNotEmpty ? '${controller.currentAcc}' : '${controller.currentAcc}',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18),
               )),
@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text('Nombre:', style: TextStyle(fontSize: 18, color: Color(0xFFFFFFFF))),
                   SizedBox(width: 18),
                   Obx(() => Text(
-                    controller.accounts.isNotEmpty ? 'User ID: ${controller.accounts[0].userId}' : 'No Account Name',
+                    controller.accounts.isNotEmpty ? '${controller.currentAcc}' : '${controller.currentAcc}',
                     style: TextStyle(fontSize: 18, color: Color(0xFF828087)),
                   )),
                   Icon(Icons.arrow_forward, color: Colors.white),
@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildMenuItem(String text, IconData icon) {
     return InkWell(
       onTap: () {
-        // Lógica para manejar la navegación
+        // LOgica para manejar la navegacion
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
