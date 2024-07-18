@@ -60,6 +60,26 @@ class HomeScreenController extends GetxController {
     }
   }
 
+  Future<void> editTransaction(Transaction transaction) async {
+    try {
+      await TransactionService.editTransaction(transaction);
+      fetchTransactions();
+    } catch (error) {
+      print("Error editing transaction: $error");
+    }
+  }
+
+  Future<void> deleteTransaction(int id) async {
+    try {
+      print('Deleting account');
+      TransactionService.deleteTransaction(id).then((_){
+        fetchTransactions();
+      });
+    } catch (error) {
+      print("Error deleting account: $error");
+    }
+  }
+
   String getCategoryNameById(int id) {
     var category = categories.firstWhereOrNull((category) => category.id == id);
     return category?.name ?? 'Unknown';

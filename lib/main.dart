@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mycash_front/screens/objective_screens/objective_viewmodel.dart';
 import 'package:mycash_front/services/api_config.dart';
