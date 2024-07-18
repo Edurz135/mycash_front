@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 
-class TrasferirScreen extends StatelessWidget {
+class TrasferirScreen extends StatefulWidget {
+  @override
+  _TrasferirScreenState createState() => _TrasferirScreenState();
+}
+
+class _TrasferirScreenState extends State<TrasferirScreen> {
+  final TextEditingController _amountControllerFrom = TextEditingController();
+  final TextEditingController _amountControllerTo = TextEditingController();
+
+  @override
+  void dispose() {
+    _amountControllerFrom.dispose();
+    _amountControllerTo.dispose();
+    super.dispose();
+  }
+
+  bool get isTransferButtonEnabled =>
+      _amountControllerFrom.text.isNotEmpty && _amountControllerTo.text.isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +46,48 @@ class TrasferirScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(
-                  icon: Icon(Icons.add, size: 40),
-                  onPressed: () {}, // Implement functionality
+                Expanded(
+                  child: Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.add, size: 40),
+                        onPressed: () {
+                          // Implement functionality
+                        },
+                      ),
+                      TextField(
+                        controller: _amountControllerFrom,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Monto',
+                          hintStyle: TextStyle(color: Colors.white),
+                        ),
+                        onChanged: (value) => setState(() {}),
+                      ),
+                    ],
+                  ),
                 ),
                 Icon(Icons.arrow_forward, size: 40),
-                IconButton(
-                  icon: Icon(Icons.add, size: 40),
-                  onPressed: () {}, // Implement functionality
+                Expanded(
+                  child: Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.add, size: 40),
+                        onPressed: () {
+                          // Implement functionality
+                        },
+                      ),
+                      TextField(
+                        controller: _amountControllerTo,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Monto',
+                          hintStyle: TextStyle(color: Colors.white),
+                        ),
+                        onChanged: (value) => setState(() {}),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -64,9 +116,48 @@ class TrasferirScreen extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(40),
+            child: Container(
+              width: double.infinity,
+              height: 50, // Reduced height
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isTransferButtonEnabled 
+                    ? [Color.fromRGBO(89, 134, 223, 1), Color.fromRGBO(177, 86, 168, 1)]
+                    : [Colors.grey, Colors.grey], // Grey gradient when disabled
+                ),
+              ),
+              child: ElevatedButton(
+                onPressed: isTransferButtonEnabled ? _performTransfer : null,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.transparent), // Make background transparent
+                  shadowColor: MaterialStateProperty.all(Colors.transparent), // No shadow
+                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 30, vertical: 10)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  "Transferir",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  void _performTransfer() {
+    // Implement the transfer logic here
+    print('Transferring from ${_amountControllerFrom.text} to ${_amountControllerTo.text}');
   }
 
   Widget _buildAccountTile(String accountType, String balance) {
@@ -74,11 +165,11 @@ class TrasferirScreen extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF9C42C6), Color(0xFFE38466)],
-                      ),
-                      borderRadius: BorderRadius.circular(80.0),
-                    ),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF9C42C6), Color(0xFFE38466)],
+        ),
+        borderRadius: BorderRadius.circular(80.0),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -89,4 +180,3 @@ class TrasferirScreen extends StatelessWidget {
     );
   }
 }
-
