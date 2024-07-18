@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mycash_front/screens/objetives/objetivo.dart';
-import 'package:mycash_front/screens/objetives/objetivos_viewmodel.dart';
+import 'package:mycash_front/model/objective_model.dart';
+import 'package:mycash_front/screens/objective_screens/objective_viewmodel.dart';
 
 class DetalleObjetivoScreen extends StatefulWidget {
-  final Objetivo objetivo;
+  final Objective objective;
 
-  DetalleObjetivoScreen({required this.objetivo});
+  DetalleObjetivoScreen({required this.objective});
 
   @override
   _DetalleObjetivoScreenState createState() => _DetalleObjetivoScreenState();
@@ -19,7 +19,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
 
   void _agregarAhorro() async {
     final TextEditingController _controller = TextEditingController();
-    double? monto;
+    double? amount;
 
     await showDialog(
       context: context,
@@ -31,7 +31,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(hintText: "Ingrese la cantidad a ahorrar"),
             onChanged: (value) {
-              monto = double.tryParse(value);
+              amount = double.tryParse(value);
             },
           ),
           actions: <Widget>[
@@ -44,9 +44,9 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
             TextButton(
               child: Text('Agregar'),
               onPressed: () {
-                if (monto != null && monto! > 0) {
+                if (amount != null && amount! > 0) {
                   setState(() {
-                    widget.objetivo.agregarAhorro(monto!);
+                    widget.objective.addSavings(amount!);
                   });
                   Navigator.of(context).pop();
                 }
@@ -68,7 +68,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Provider.of<ObjetivosViewModel>(context, listen: false).eliminarObjetivo(widget.objetivo);
+                Provider.of<ObjectivesViewModel>(context, listen: false).removeObjective(widget.objective);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop(); // Volvemos atrás dos veces para cerrar esta pantalla y la anterior
               },
@@ -93,7 +93,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          widget.objetivo.nombre, 
+          widget.objective.name, 
           style: const TextStyle(
             color: Colors.white, 
             fontSize: 24,
@@ -125,13 +125,13 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                       sections: [
                         PieChartSectionData(
                           color: Colors.green,
-                          value: widget.objetivo.montoAhorrado,
+                          value: widget.objective.savedAmount,
                           title: '',
                           radius: 70,
                         ),
                         PieChartSectionData(
                           color: Colors.red,
-                          value: widget.objetivo.cantidadObjetivo - widget.objetivo.montoAhorrado,
+                          value: widget.objective.targetAmount - widget.objective.savedAmount,
                           title: '',
                           radius: 70,
                         ),
@@ -155,7 +155,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                           ),
                         ),
                         Text(
-                          'S/.${widget.objetivo.montoAhorrado.toStringAsFixed(2)} / S/.${widget.objetivo.cantidadObjetivo.toStringAsFixed(2)}',
+                          'S/.${widget.objective.savedAmount.toStringAsFixed(2)} / S/.${widget.objective.targetAmount.toStringAsFixed(2)}',
                           style: const TextStyle(
                             color: Colors.white, // Cambiar color del texto central
                             fontSize: 14, // Ajusta el tamaño del texto central

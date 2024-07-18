@@ -4,7 +4,7 @@ import 'package:mycash_front/screens/home_screen/home_screen.dart';
 import 'package:mycash_front/screens/profile/profile_screen.dart';
 import 'package:mycash_front/screens/statistics_screen.dart';
 import 'package:mycash_front/screens/transaction_screen.dart';
-import 'package:mycash_front/screens/objetives/a_objetive_screen.dart';
+import 'package:mycash_front/screens/objective_screens/a_objective_screen.dart';
 
 
 class BottomNavBar extends StatefulWidget {

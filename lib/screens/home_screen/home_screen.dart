@@ -32,10 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        //ClipRRect(
-        //borderRadius:
-        //BorderRadius.circular(10), // Set border radius for rounding
-        //child:
         Container(
           width: double.infinity, // Full width of the screen
           decoration: const BoxDecoration(
@@ -70,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        //),
         Padding(
             padding: const EdgeInsets.all(20.0),
             child:

@@ -1,23 +1,27 @@
+//b_objetive_configuration_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'package:mycash_front/screens/objetives/objetivo.dart';
-import 'package:mycash_front/screens/objetives/objetivos_viewmodel.dart';
+import 'package:mycash_front/model/objective_model.dart';
+import 'package:mycash_front/screens/objective_screens/objective_viewmodel.dart';
 
-class CrearObjetivoScreen extends StatefulWidget {
+class CreateObjectiveScreen extends StatefulWidget {
   @override
-  _CrearObjetivoScreenState createState() => _CrearObjetivoScreenState();
+  _CreateObjectiveScreenState createState() => _CreateObjectiveScreenState();
 }
 
-class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
+class _CreateObjectiveScreenState extends State<CreateObjectiveScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _nombre = '';
-  double _cantidadObjetivo = 0.0;
-  double _montoAhorrado = 0.0;
-  DateTime _fechaLimite = DateTime.now();
+  int id = 0; 
+  String _name = '';
+  double _targetAmount = 0.0;
+  double _savedAmount = 0.0;
+  DateTime _deadline = DateTime.now();
+  DateTime _createdAt = DateTime.now();
+  DateTime _updatedAt = DateTime.now();
   Color _color = Colors.blue;
-  IconData _icono = Icons.star;  
+  IconData _icon = Icons.star;  
 
   final List<IconData> _iconOptions = [
     Icons.star,
@@ -79,7 +83,7 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                onSaved: (value) => _nombre = value!,
+                onSaved: (value) => _name = value!,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese un nombre';
@@ -107,7 +111,7 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                   ),
                 ),
                 keyboardType: TextInputType.number,
-                onSaved: (value) => _cantidadObjetivo = double.parse(value!),
+                onSaved: (value) => _targetAmount = double.parse(value!),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese una cantidad';
@@ -138,7 +142,7 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                   ),
                 ),
                 keyboardType: TextInputType.number,
-                onSaved: (value) => _montoAhorrado = double.parse(value!),
+                onSaved: (value) => _savedAmount = double.parse(value!),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese un monto ahorrado';
@@ -168,7 +172,7 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 8.0), // Agrega padding izquierdo
                           child: Text(
-                            '${_fechaLimite.day}/${_fechaLimite.month}/${_fechaLimite.year}',
+                            '${_deadline.day}/${_deadline.month}/${_deadline.year}',
                             style: TextStyle(color: Colors.black), // Texto negro
                           ),
                         ),
@@ -186,13 +190,13 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                 onTap: () async {
                   DateTime? picked = await showDatePicker(
                     context: context,
-                    initialDate: _fechaLimite,
+                    initialDate: _deadline,
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2101),
                   );
-                  if (picked != null && picked != _fechaLimite) {
+                  if (picked != null && picked != _deadline) {
                     setState(() {
-                      _fechaLimite = picked;
+                      _deadline = picked;
                     });
                   }
                 },
@@ -297,19 +301,19 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                       Padding(
                         padding: const EdgeInsets.only(right: 12.0), // Agrega padding derecho al icono
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.black, // Color del borde
                           ),
                           padding: const EdgeInsets.all(1), // Grosor del borde
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.white, // Color del icono
                             ),
-                            padding: EdgeInsets.all(10), // Espacio dentro del círculo del icono
+                            padding: const EdgeInsets.all(10), // Espacio dentro del círculo del icono
                             child: Icon(
-                              _icono,
+                              _icon,
                               size: 30,
                               color: Colors.black, // Color del icono
                             ),
@@ -331,7 +335,7 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      _icono = icon;
+                                      _icon = icon;
                                     });
                                     Navigator.of(context).pop();
                                   },
@@ -358,15 +362,18 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Objetivo nuevoObjetivo = Objetivo(
-                      nombre: _nombre,
-                      cantidadObjetivo: _cantidadObjetivo,
-                      montoAhorrado: _montoAhorrado,
-                      fechaLimite: _fechaLimite,
+                    Objective newObjective = Objective(
+                      id:id,
+                      name: _name,
+                      targetAmount: _targetAmount,
+                      savedAmount: _savedAmount,
+                      deadline: _deadline,
                       color: _color,
-                      icono: _icono,
+                      icon: _icon, 
+                      createdAt: _createdAt, 
+                      updatedAt: _updatedAt,
                     );
-                    Provider.of<ObjetivosViewModel>(context, listen: false).agregarObjetivo(nuevoObjetivo);
+                    Provider.of<ObjectivesViewModel>(context, listen: false).addObjective(newObjective);
                     Navigator.pop(context);
                   }
                 },
@@ -385,10 +392,10 @@ class _CrearObjetivoScreenState extends State<CrearObjetivoScreen> {
                   ),
                 ),
               ),
-            ]
-          )
-        )
-      )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
