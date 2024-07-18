@@ -6,7 +6,7 @@ import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
-import 'package:mycash_front/screens/trasferir_screen.dart';
+import 'package:mycash_front/screens/transferir_screen.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => TrasferirScreen()),
+                            MaterialPageRoute(builder: (context) => TransferirScreen()),
                           );
                         },
                         child: OperationItem(
