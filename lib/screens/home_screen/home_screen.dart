@@ -7,6 +7,7 @@ import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
 import 'package:mycash_front/screens/income_screen.dart';
+import 'package:mycash_front/screens/create_expenses/create_expenses_screen.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -143,11 +144,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
                   SizedBox(width: 8), // Add spacing between boxes
                   Expanded(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateExpenseScreen(controller: controller,)),
+                      );
+                    },
                     child: OperationItem(
-                      icon: Icons.arrow_downward,
+                      icon: Icons.arrow_upward,
                       label: 'Gasto',
                     ),
-                  ),
+                  )),
                   SizedBox(width: 8), // Add spacing between boxes
                   Expanded(
                     child: OperationItem(
