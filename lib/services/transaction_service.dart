@@ -9,7 +9,7 @@ class TransactionService{
     print("Calling API: GET $url");
     final response = await http.get(
       url,
-      headers: {'Authorization': 'Bearer ${APIConfig.token}'},
+      headers: {'Authorization': 'Bearer ${ await APIConfig.getToken()}'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -28,7 +28,7 @@ class TransactionService{
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${APIConfig.token}',
+        'Authorization': 'Bearer ${ await APIConfig.getToken()}',
       },
       body: json.encode(transaction.toJson()),
     );
@@ -45,7 +45,7 @@ class TransactionService{
     print("Calling API: DELETE $url");
     final response = await http.delete(
       url,
-      headers: {'Authorization': 'Bearer ${APIConfig.token}'},
+      headers: {'Authorization': 'Bearer ${ await APIConfig.getToken()}'},
     );
     if (response.statusCode == 200) {
       print("API Response: ${response.body}");

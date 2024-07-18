@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class APIConfig {
   static String baseURL = "http://10.0.2.2:3000/api/";
   static String token = "";
@@ -13,6 +16,10 @@ class APIConfig {
         token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE3MTg2MzE3fQ.JeWe0mN26B9GV6nTwnojVs5Yro8RphV6_ryKLSvNM5s";
         break;
     }
+  }
+  static Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("token");
   }
 
   static void setToken(String token) {

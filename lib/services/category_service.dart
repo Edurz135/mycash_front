@@ -9,7 +9,7 @@ class CategoryService{
     print("Calling API: GET $url");
     final response = await http.get(
       url,
-      headers: {'Authorization': 'Bearer ${APIConfig.token}'},
+      headers: {'Authorization': 'Bearer ${ await APIConfig.getToken()}'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
