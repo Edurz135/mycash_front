@@ -6,7 +6,7 @@ import 'package:mycash_front/components/transaction_item.dart';
 import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
-import 'package:mycash_front/screens/income_screen.dart';
+import 'package:mycash_front/screens/trasferir_screen.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -128,35 +128,36 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(
-                      child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => IncomeScreen()),
-                      );
-                    },
-                    child: OperationItem(
+                    Expanded(
+                      child: OperationItem(
                       icon: Icons.arrow_upward,
                       label: 'Ingreso',
-                    ),
-                  )),
-                  SizedBox(width: 8), // Add spacing between boxes
-                  Expanded(
-                    child: OperationItem(
+                         ),
+                         ),
+                    SizedBox(width: 8), // Add spacing between boxes
+                    Expanded(
+                      child: OperationItem(
                       icon: Icons.arrow_downward,
                       label: 'Gasto',
-                    ),
+                      ),
+                      ),
+                    SizedBox(width: 8), // Add spacing between boxes
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => TrasferirScreen()),
+                          );
+                        },
+                        child: OperationItem(
+                          icon: Icons.transfer_within_a_station,
+                          label: 'Transferir',
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 8), // Add spacing between boxes
-                  Expanded(
-                    child: OperationItem(
-                      icon: Icons.transfer_within_a_station,
-                      label: 'Transferir',
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 16),
               const Text(
                 'Últimas transacciones',
