@@ -19,7 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     HomeScreen(),
     StatisticsScreen(),
     TransactionScreen(),
-    ObjetiveScreen(),
+    ObjectiveScreen(),
     ProfileScreen(),
   ];
 
