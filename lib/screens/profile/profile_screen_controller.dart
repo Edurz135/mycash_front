@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileScreenController extends GetxController {
   RxList<Account> accounts = <Account>[].obs;
   String currentAcc = "";
+  String url = "";
 
   ProfileScreenController(){
 
@@ -16,6 +17,9 @@ class ProfileScreenController extends GetxController {
   Future<void> fetchAccounts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     currentAcc = prefs.getString("name")!;
+    url = prefs.getString("profile_picture")!;
+    print("profile pic is:");
+    print(url);
     try {
       final List<Account> fetchedAccounts =
           await AccountService.fetchAccounts();

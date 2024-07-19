@@ -49,7 +49,7 @@ class HomeScreenController extends GetxController {
       print('Failed to fetch transactions: $error');
     }
   }
-  
+
   Future<void> fetchCategories() async{
     try {
       final List<Category> fetchedCategories =

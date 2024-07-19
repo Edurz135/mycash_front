@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mycash_front/screens/profile/profile_screen_controller.dart';
+import 'package:mycash_front/services/user_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -9,11 +14,34 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   ProfileScreenController controller = Get.put(ProfileScreenController());
+  final ImagePicker picker = ImagePicker();
+
+  File? image;
+  File? imageTemp;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image != null) {
+          imageTemp = File(image.path);
+          controller.url = await UserService.getNewProfileUrl(imageTemp!);
+        setState(() {
+          print('$imageTemp');
+        });
+      }
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+  checkInfo() async {
+    await controller.fetchAccounts();
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-    controller.fetchAccounts();
+    checkInfo();
   }
 
   @override
@@ -33,7 +61,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               SizedBox(height: 16),
-              CircleAvatar(radius: 50, backgroundImage: AssetImage('assets/profilepic.png')),
+              GestureDetector(
+                onTap: () {
+                  pickImage();
+                },
+                child: CircleAvatar(radius: 50, backgroundImage: controller.url!="" ? Image.network(controller.url).image : AssetImage('assets/profilepic.png')),
+              ),
               SizedBox(height: 16),
               Text('Bienvenido', textAlign: TextAlign.center, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Obx(() => Text(
@@ -81,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildMenuItem(String text, IconData icon) {
     return InkWell(
       onTap: () {
-        // LOgica para manejar la navegacion
+        // Lógica para manejar la navegación
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

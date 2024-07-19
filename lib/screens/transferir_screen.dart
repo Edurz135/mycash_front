@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mycash_front/model/account_model.dart';
+import 'package:mycash_front/services/account_service.dart';
+import 'package:mycash_front/services/transaction_service.dart';
 
 class TransferirScreen extends StatefulWidget {
   @override
@@ -6,22 +10,52 @@ class TransferirScreen extends StatefulWidget {
 }
 
 class _TransferirScreenState extends State<TransferirScreen> {
-  final TextEditingController _amountControllerFrom = TextEditingController();
-  final TextEditingController _amountControllerTo = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  //final TextEditingController _amountControllerTo = TextEditingController();
   String? selectedAccountFromName;
   String? selectedAccountToName;
+  RxList<Account> accounts = <Account>[].obs;
+  Account? fromAcc;
+  Account? toAcc;
 
   @override
   void dispose() {
-    _amountControllerFrom.dispose();
-    _amountControllerTo.dispose();
+    _amountController.dispose();
+    //_amountControllerTo.dispose();
     super.dispose();
   }
 
-  bool get isTransferButtonEnabled =>
-      selectedAccountFromName != null && selectedAccountToName != null &&
-      _amountControllerFrom.text.isNotEmpty && _amountControllerTo.text.isNotEmpty;
+  Future<void> fetchAccounts() async {
+    try {
+      final List<Account> fetchedAccounts =
+          await AccountService.fetchAccounts();
+      accounts.assignAll(fetchedAccounts);
+      for(Account acc in accounts){
+        debugPrint("ACCOUNT");
+        debugPrint(acc.currencyType.name);
+        debugPrint("${acc.balance}");
+        debugPrint("${acc.id}");
+      }
+      setState(() {});
+    } catch (error) {
+      print('Failed to fetch accounts: $error');
+    }
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    fetchAccounts();
+  }
+/*
+  bool get isTransferButtonEnabled =>
+      toAcc != null && fromAcc != null &&
+      _amountController.text.isNotEmpty &&  toAcc?.id != fromAcc?.id;
+      */
+bool get isTransferButtonEnabled =>
+      toAcc != null && fromAcc != null &&
+      _amountController.text.isNotEmpty &&
+      toAcc?.id != fromAcc?.id && double.parse(_amountController.text) <= (fromAcc!.balance);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,15 +90,7 @@ class _TransferirScreenState extends State<TransferirScreen> {
                           icon: Icon(Icons.add, size: 40),
                           onPressed: () => _selectAccount(true),
                         ),
-                        Text(selectedAccountFromName ?? 'Elegir', style: TextStyle(color: Colors.white, fontSize: 16)),
-                        TextField(
-                          controller: _amountControllerFrom,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: 'Monto',
-                            hintStyle: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                        Text(fromAcc?.name ?? 'Elegir', style: TextStyle(color: Colors.white, fontSize: 16)),
                       ],
                     ),
                   ),
@@ -76,7 +102,9 @@ class _TransferirScreenState extends State<TransferirScreen> {
                           icon: Icon(Icons.add, size: 40),
                           onPressed: () => _selectAccount(false),
                         ),
-                        Text(selectedAccountToName ?? 'Elegir', style: TextStyle(color: Colors.white, fontSize: 16)),
+                        //Text(toAcc == null ? 'Elegir' : toAcc!.name, style: TextStyle(color: Colors.white, fontSize: 16)),
+                        Text(toAcc?.name ?? 'Elegir', style: TextStyle(color: Colors.white, fontSize: 16)),
+                        /*
                         TextField(
                           controller: _amountControllerTo,
                           keyboardType: TextInputType.number,
@@ -84,10 +112,25 @@ class _TransferirScreenState extends State<TransferirScreen> {
                             hintText: 'Monto',
                             hintStyle: TextStyle(color: Colors.white),
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(child: TextField(
+                          controller: _amountController,
+                          onChanged: (value) => {setState(() {})},
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'Monto',
+                            hintStyle: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                  )
                 ],
               ),
               SizedBox(height: 40), // Espacio adicional entre los elementos
@@ -110,7 +153,7 @@ class _TransferirScreenState extends State<TransferirScreen> {
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: isTransferButtonEnabled 
+                      colors: isTransferButtonEnabled
                         ? [Color.fromRGBO(89, 134, 223, 1), Color.fromRGBO(177, 86, 168, 1)]
                         : [Colors.grey, Colors.grey],
                     ),
@@ -133,40 +176,26 @@ class _TransferirScreenState extends State<TransferirScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Seleccionar Cuenta"),
+          title: const Text("Seleccionar Cuenta"),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
-                ListTile(
-                  leading: Icon(Icons.account_balance_wallet, color: Colors.purple),
-                  title: Text("Efectivo"),
-                  subtitle: Text("PEN 930.00"),
-                  onTap: () {
-                    setState(() {
-                      if (isFrom) {
-                        selectedAccountFromName = "Efectivo";
-                      } else {
-                        selectedAccountToName = "Efectivo";
-                      }
-                      Navigator.of(context).pop();
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.credit_card, color: Colors.blue),
-                  title: Text("Débito"),
-                  subtitle: Text("PEN 1130.00"),
-                  onTap: () {
-                    setState(() {
-                      if (isFrom) {
-                        selectedAccountFromName = "Débito";
-                      } else {
-                        selectedAccountToName = "Débito";
-                      }
-                      Navigator.of(context).pop();
-                    });
-                  },
-                ),
+                for(Account acc in accounts)
+                  ListTile(
+                    leading: const Icon(Icons.account_balance_wallet, color: Colors.purple),
+                    title: Text(acc.name),
+                    subtitle: Text("${acc.currencyType.name} - ${acc.balance}"),
+                    onTap: () {
+                      setState(() {
+                        if (isFrom) {
+                          fromAcc = acc;
+                        } else {
+                          toAcc = acc;
+                        }
+                        Navigator.of(context).pop();
+                      });
+                    },
+                  ),
               ],
             ),
           ),
@@ -174,7 +203,15 @@ class _TransferirScreenState extends State<TransferirScreen> {
       },
     );
   }
-  void _performTransfer() {
-    print('Transferring from ${_amountControllerFrom.text} to ${_amountControllerTo.text}');
+  Future<void> _performTransfer() async {
+    bool success = await TransactionService.transfer(fromAcc!.id,toAcc!.id,double.parse(_amountController.text));
+    if(success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 5),
+            content: Text('Se ha realizado la transferencia exitosamente.'),
+          )
+        );
+    }
   }
 }
