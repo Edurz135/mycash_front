@@ -62,6 +62,15 @@ class ObjectiveController extends GetxController {
     }
   }
 
+  Future<void> removeAmountFromObjective(int id, double amount) async {
+    try {
+      await ObjectiveService.removeAmountFromObjective(id, amount);
+      fetchObjectives();
+    } catch (error) {
+      print('Failed to remove amount from objective: $error');
+    }
+  }
+
   Future<String> viewObjectiveProgress(int id) async {
     try {
       final progress = await ObjectiveService.viewObjectiveProgress(id);

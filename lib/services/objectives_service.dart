@@ -95,13 +95,32 @@ class ObjectiveService {
         'Authorization': 'Bearer ${await APIConfig.getToken()}',
         'Content-Type': 'application/json',
       },
-      body: json.encode({'monto': amount}),
+      body: json.encode({'amount': amount}),
     );
     if (response.statusCode == 200) {
       print("API Response: ${response.body}");
     } else {
       print("API Error: ${response.statusCode} ${response.reasonPhrase}");
       throw Exception('Failed to add amount to objective');
+    }
+  }
+
+  static Future<void> removeAmountFromObjective(int id, double amount) async {
+    final url = Uri.parse('${APIConfig.baseURL}objectives/$id/removeAmount');
+    print("Calling API: PUT $url");
+    final response = await http.put(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await APIConfig.getToken()}',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'amount': amount}),
+    );
+    if (response.statusCode == 200) {
+      print("API Response: ${response.body}");
+    } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
+      throw Exception('Failed to remove amount from objective');
     }
   }
 

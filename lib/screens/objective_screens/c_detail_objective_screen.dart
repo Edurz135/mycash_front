@@ -17,7 +17,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
   final ObjectiveController _controller = Get.find();
 
   void _agregarAhorro() async {
-    final TextEditingController _amountController = TextEditingController();
+    final TextEditingController _controllerTextField = TextEditingController();
     double? amount;
 
     await showDialog(
@@ -26,7 +26,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
         return AlertDialog(
           title: Text('Agregar Ahorro'),
           content: TextField(
-            controller: _amountController,
+            controller: _controllerTextField,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(hintText: "Ingrese la cantidad a ahorrar"),
             onChanged: (value) {
@@ -44,15 +44,71 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
               child: Text('Agregar'),
               onPressed: () {
                 if (amount != null && amount! > 0) {
-                  _controller.addAmountToObjective(widget.objective.id, amount!).then((_) {
+                  double nuevoMonto = widget.objective.savedAmount + amount!;
+                  if (nuevoMonto > widget.objective.targetAmount) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('El monto ahorrado no puede superar el monto objetivo.'),
+                      ),
+                    );
+                  } else {
+                    _controller.addAmountToObjective(widget.objective.id, amount!);
                     setState(() {
                       widget.objective.savedAmount += amount!;
                     });
                     Navigator.of(context).pop();
-                  }).catchError((error) {
-                    // Manejar error
-                    print("Failed to add amount: $error");
-                  });
+                  }
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _retirarAhorro() async {
+    final TextEditingController _controllerTextField = TextEditingController();
+    double? amount;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Retirar Ahorro'),
+          content: TextField(
+            controller: _controllerTextField,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(hintText: "Ingrese la cantidad a retirar"),
+            onChanged: (value) {
+              amount = double.tryParse(value);
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Retirar'),
+              onPressed: () {
+                if (amount != null && amount! > 0) {
+                  double nuevoMonto = widget.objective.savedAmount - amount!;
+                  if (nuevoMonto < 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('El monto ahorrado no puede ser negativo.'),
+                      ),
+                    );
+                  } else {
+                    _controller.removeAmountFromObjective(widget.objective.id, amount!);
+                    setState(() {
+                      widget.objective.savedAmount -= amount!;
+                    });
+                    Navigator.of(context).pop();
+                  }
                 }
               },
             ),
@@ -213,6 +269,32 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
                   alignment: Alignment.center,
                   child: const Text(
                     'Agregar ahorro',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _retirarAhorro,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(80.0),
+                ),
+                padding: EdgeInsets.zero,
+              ),
+              child: Ink(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color.fromARGB(255, 17, 83, 206), Color.fromARGB(255, 248, 102, 199)],
+                  ),
+                  borderRadius: BorderRadius.circular(80.0),
+                ),
+                child: Container(
+                  constraints: const BoxConstraints(minWidth: 20.0, minHeight: 40.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Retirar ahorro',
                     textAlign: TextAlign.center,
                   ),
                 ),
