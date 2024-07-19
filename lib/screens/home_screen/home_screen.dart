@@ -7,7 +7,10 @@ import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
 import 'package:mycash_front/screens/transferir_screen.dart';
+import 'package:mycash_front/screens/create_expenses/create_expenses_screen.dart';
+import 'package:mycash_front/screens/create_income/create_income_screen.dart';
 import 'package:intl/intl.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -124,18 +127,32 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                     Expanded(
-                      child: OperationItem(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateIncomeScreen(controller: controller,)),
+                      );
+                    },
+                    child: OperationItem(
                       icon: Icons.arrow_upward,
                       label: 'Ingreso',
-                         ),
-                         ),
-                    SizedBox(width: 8), // Add spacing between boxes
-                    Expanded(
-                      child: OperationItem(
+                    ),
+                  )),
+                  SizedBox(width: 8), // Add spacing between boxes
+                  Expanded(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateExpenseScreen(controller: controller,)),
+                      );
+                    },
+                    child: OperationItem(
                       icon: Icons.arrow_downward,
                       label: 'Gasto',
-                      ),
-                      ),
+                    ),
+                  )),
                     SizedBox(width: 8), // Add spacing between boxes
                     Expanded(
                       child: GestureDetector(
