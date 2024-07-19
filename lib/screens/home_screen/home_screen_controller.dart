@@ -8,6 +8,9 @@ import 'package:mycash_front/services/category_service.dart';
 import 'package:mycash_front/services/currencyType_service.dart';
 import 'package:mycash_front/services/transaction_service.dart';
 
+import 'package:mycash_front/screens/profile/profile_screen_controller.dart';
+import 'package:mycash_front/services/user_service.dart';
+
 class HomeScreenController extends GetxController {
   RxList<Account> accounts = <Account>[].obs;
   RxList<CurrencyType> currencyTypes = <CurrencyType>[].obs;

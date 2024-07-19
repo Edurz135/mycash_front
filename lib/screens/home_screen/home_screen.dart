@@ -9,6 +9,9 @@ import 'package:mycash_front/screens/transaction_detail_screen/transaction_detai
 import 'package:mycash_front/screens/transferir_screen.dart';
 import 'package:intl/intl.dart';
 
+import 'package:mycash_front/screens/profile/profile_screen_controller.dart';
+import 'package:mycash_front/services/user_service.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -16,10 +19,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeScreenController controller = Get.put(HomeScreenController());
+  ProfileScreenController profileController = Get.put(ProfileScreenController());
+
+  checkInfo() async {
+    await profileController.fetchAccounts();
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+    checkInfo();
     controller.fetchAccounts();
     controller.fetchCurrencyTypes();
     controller.fetchTransactions(); // Fetch transactions
@@ -44,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          child: const Column(
+          child: Column(
             children: [
               SizedBox(height: 30), // Add spacing
               Text(
@@ -55,13 +65,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                'Pato 🦆',
+              SizedBox(height: 16),
+              Obx(() => Text(
+                controller.accounts.isNotEmpty ? '${profileController.currentAcc}' : '${profileController.currentAcc}',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
+                style: const TextStyle(fontSize: 18),
+              )),
               SizedBox(height: 30), // Add spacing
             ],
           ),
