@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mycash_front/model/objective_model.dart';
 import 'package:mycash_front/services/api_config.dart';
@@ -9,7 +10,7 @@ class ObjectiveService {
     print("Calling API: GET $url");
     final response = await http.get(
       url,
-      headers: {'Authorization': 'Bearer ${ await APIConfig.getToken()}'},
+      headers: {'Authorization': 'Bearer ${await APIConfig.getToken()}'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -41,10 +42,9 @@ class ObjectiveService {
     String name,
     double targetAmount,
     double currentAmount,
-    String iconName,
-    String colorName,
+    IconData iconName, 
+    Color colorName, 
     DateTime deadline,
-    int currencyTypeId,
   ) async {
     final url = Uri.parse('${APIConfig.baseURL}objectives/');
     print("Calling API: POST $url");
@@ -58,10 +58,9 @@ class ObjectiveService {
         'objective_name': name,
         'target_amount': targetAmount,
         'current_amount': currentAmount,
-        'icon_name': iconName,
-        'color_name': colorName,
+        'icon_name': iconName.codePoint.toString(),
+        'color_name': colorName.value.toString(),
         'deadline': deadline.toIso8601String(),
-        'currencyTypeId': currencyTypeId,
       }),
     );
     if (response.statusCode == 200) {
@@ -69,40 +68,6 @@ class ObjectiveService {
     } else {
       print("API Error: ${response.statusCode} ${response.reasonPhrase}");
       throw Exception('Failed to create objective');
-    }
-  }
-
-  static Future<void> updateObjective(
-    int id,
-    String name,
-    double targetAmount,
-    String iconName,
-    String colorName,
-    DateTime deadline,
-    int currencyTypeId,
-  ) async {
-    final url = Uri.parse('${APIConfig.baseURL}objectives/$id');
-    print("Calling API: PUT $url");
-    final response = await http.put(
-      url,
-      headers: {
-        'Authorization': 'Bearer ${ await APIConfig.getToken()}',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'objective_name': name,
-        'target_amount': targetAmount,
-        'icon_name': iconName,
-        'color_name': colorName,
-        'deadline': deadline.toIso8601String(),
-        'currencyTypeId': currencyTypeId,
-      }),
-    );
-    if (response.statusCode == 200) {
-      print("API Response: ${response.body}");
-    } else {
-      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
-      throw Exception('Failed to update objective');
     }
   }
 
@@ -121,31 +86,16 @@ class ObjectiveService {
     }
   }
 
-  static Future<void> deleteAllObjectives() async {
-    final url = Uri.parse('${APIConfig.baseURL}objectives');
-    print("Calling API: DELETE $url");
-    final response = await http.delete(
-      url,
-      headers: {'Authorization': 'Bearer ${ await APIConfig.getToken()}'},
-    );
-    if (response.statusCode == 200) {
-      print("API Response: ${response.body}");
-    } else {
-      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
-      throw Exception('Failed to delete all objectives');
-    }
-  }
-
   static Future<void> addAmountToObjective(int id, double amount) async {
     final url = Uri.parse('${APIConfig.baseURL}objectives/$id/addAmount');
     print("Calling API: PUT $url");
     final response = await http.put(
       url,
       headers: {
-        'Authorization': 'Bearer ${ await APIConfig.getToken()}',
+        'Authorization': 'Bearer ${await APIConfig.getToken()}',
         'Content-Type': 'application/json',
       },
-      body: json.encode({'amount': amount}),
+      body: json.encode({'monto': amount}),
     );
     if (response.statusCode == 200) {
       print("API Response: ${response.body}");

@@ -1,10 +1,8 @@
-//detalle_objetivo_screen.dart
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
-
+import 'package:get/get.dart';
 import 'package:mycash_front/model/objective_model.dart';
-import 'package:mycash_front/screens/objective_screens/objective_viewmodel.dart';
+import 'package:mycash_front/screens/objective_screens/objective_screen_controller.dart';
 
 class DetalleObjetivoScreen extends StatefulWidget {
   final Objective objective;
@@ -16,9 +14,10 @@ class DetalleObjetivoScreen extends StatefulWidget {
 }
 
 class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
+  final ObjectiveController _controller = Get.find();
 
   void _agregarAhorro() async {
-    final TextEditingController _controller = TextEditingController();
+    final TextEditingController _amountController = TextEditingController();
     double? amount;
 
     await showDialog(
@@ -27,7 +26,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
         return AlertDialog(
           title: Text('Agregar Ahorro'),
           content: TextField(
-            controller: _controller,
+            controller: _amountController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(hintText: "Ingrese la cantidad a ahorrar"),
             onChanged: (value) {
@@ -45,10 +44,15 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
               child: Text('Agregar'),
               onPressed: () {
                 if (amount != null && amount! > 0) {
-                  setState(() {
-                    widget.objective.addSavings(amount!);
+                  _controller.addAmountToObjective(widget.objective.id, amount!).then((_) {
+                    setState(() {
+                      widget.objective.savedAmount += amount!;
+                    });
+                    Navigator.of(context).pop();
+                  }).catchError((error) {
+                    // Manejar error
+                    print("Failed to add amount: $error");
                   });
-                  Navigator.of(context).pop();
                 }
               },
             ),
@@ -68,7 +72,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Provider.of<ObjectivesViewModel>(context, listen: false).removeObjective(widget.objective);
+                _controller.deleteObjective(widget.objective.id);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop(); // Volvemos atrás dos veces para cerrar esta pantalla y la anterior
               },
@@ -93,14 +97,14 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          widget.objective.name, 
+          widget.objective.name,
           style: const TextStyle(
-            color: Colors.white, 
+            color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true, // Esto centra el título horizontalmente
+        centerTitle: true,
         toolbarHeight: 120.0,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -190,7 +194,7 @@ class _DetalleObjetivoScreenState extends State<DetalleObjetivoScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed:_agregarAhorro,
+              onPressed: _agregarAhorro,
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(80.0),

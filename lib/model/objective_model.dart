@@ -5,6 +5,7 @@ class Objective {
   String name;
   double targetAmount;
   double savedAmount;
+  int userId;
   DateTime deadline;
   DateTime createdAt;
   DateTime updatedAt;
@@ -16,6 +17,7 @@ class Objective {
     required this.name,
     required this.targetAmount,
     required this.savedAmount,
+    required this.userId,
     required this.deadline,
     required this.createdAt,
     required this.updatedAt,
@@ -23,35 +25,18 @@ class Objective {
     required this.icon,
   });
 
-  void addSavings(double amount) {
-    savedAmount += amount;
-  }
-
   factory Objective.fromJson(Map<String, dynamic> json) {
     return Objective(
-      id: json['id'],
-      name: json['name'],
-      targetAmount: json['targetAmount'].toDouble(),
-      savedAmount: json['savedAmount'].toDouble(),
+      id: json['id'] ?? 0,
+      name: json['objective_name'] ?? '',
+      targetAmount: (json['target_amount'] as num?)?.toDouble() ?? 0.0,
+      savedAmount: (json['current_amount'] as num?)?.toDouble() ?? 0.0,
+      userId: json['userId'] ?? 0,
       deadline: DateTime.parse(json['deadline']),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
-      color: Color(int.parse(json['color'])),
-      icon: IconData(int.parse(json['icon']), fontFamily: 'MaterialIcons'),
+      color: json['color_name'] != null ? Color(int.parse(json['color_name'])) : Colors.transparent,
+      icon: json['icon_name'] != null ? IconData(int.parse(json['icon_name']), fontFamily: 'MaterialIcons') : Icons.error,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'targetAmount': targetAmount,
-      'savedAmount': savedAmount,
-      'deadline': deadline.toIso8601String(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-      'color': color.value.toRadixString(16), // Convierte el color a un string hexadecimal
-      'icon': icon.codePoint, // Convierte el icono a un entero
-    };
   }
 }
