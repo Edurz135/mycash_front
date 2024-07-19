@@ -7,7 +7,12 @@ import 'package:mycash_front/screens/accounts_screen/accounts_screen.dart';
 import 'package:mycash_front/screens/home_screen/home_screen_controller.dart';
 import 'package:mycash_front/screens/transaction_detail_screen/transaction_detail_screen.dart';
 import 'package:mycash_front/screens/transferir_screen.dart';
+import 'package:mycash_front/screens/create_expenses/create_expenses_screen.dart';
+import 'package:mycash_front/screens/create_income/create_income_screen.dart';
 import 'package:intl/intl.dart';
+
+import 'package:mycash_front/screens/profile/profile_screen_controller.dart';
+import 'package:mycash_front/services/user_service.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,10 +21,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeScreenController controller = Get.put(HomeScreenController());
+  ProfileScreenController profileController = Get.put(ProfileScreenController());
+
+  checkInfo() async {
+    await profileController.fetchAccounts();
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+    checkInfo();
     controller.fetchAccounts();
     controller.fetchCurrencyTypes();
     controller.fetchTransactions(); // Fetch transactions
@@ -44,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          child: const Column(
+          child: Column(
             children: [
               SizedBox(height: 30), // Add spacing
               Text(
@@ -55,13 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                'Pato 🦆',
+              SizedBox(height: 16),
+              Obx(() => Text(
+                controller.accounts.isNotEmpty ? '${profileController.currentAcc}' : '${profileController.currentAcc}',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
+                style: const TextStyle(fontSize: 18),
+              )),
               SizedBox(height: 30), // Add spacing
             ],
           ),
@@ -124,18 +135,32 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                     Expanded(
-                      child: OperationItem(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateIncomeScreen(controller: controller,)),
+                      );
+                    },
+                    child: OperationItem(
                       icon: Icons.arrow_upward,
                       label: 'Ingreso',
-                         ),
-                         ),
-                    SizedBox(width: 8), // Add spacing between boxes
-                    Expanded(
-                      child: OperationItem(
+                    ),
+                  )),
+                  SizedBox(width: 8), // Add spacing between boxes
+                  Expanded(
+                      child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateExpenseScreen(controller: controller,)),
+                      );
+                    },
+                    child: OperationItem(
                       icon: Icons.arrow_downward,
                       label: 'Gasto',
-                      ),
-                      ),
+                    ),
+                  )),
                     SizedBox(width: 8), // Add spacing between boxes
                     Expanded(
                       child: GestureDetector(

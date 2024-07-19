@@ -8,6 +8,9 @@ import 'package:mycash_front/services/category_service.dart';
 import 'package:mycash_front/services/currencyType_service.dart';
 import 'package:mycash_front/services/transaction_service.dart';
 
+import 'package:mycash_front/screens/profile/profile_screen_controller.dart';
+import 'package:mycash_front/services/user_service.dart';
+
 class HomeScreenController extends GetxController {
   RxList<Account> accounts = <Account>[].obs;
   RxList<CurrencyType> currencyTypes = <CurrencyType>[].obs;
@@ -95,6 +98,21 @@ class HomeScreenController extends GetxController {
       ).then((_) async => {await fetchAccounts()});
     } catch (error) {
       print("Error creating account: $error");
+    }
+  }
+
+  Future<void> createTransaction(
+      double amount, int accountId, int categoryId, int currencyTypeId, double? exchange_rate) async {
+    try {
+      TransactionService.createTransaction(
+        amount, 
+        accountId,
+        categoryId, 
+        currencyTypeId, 
+        exchange_rate!,
+      ).then((_) async => {await fetchTransactions()});
+    } catch (error) {
+      print("Error creating transaction: $error");
     }
   }
 

@@ -6,6 +6,39 @@ import 'package:mycash_front/model/transaction.dart';
 import 'package:mycash_front/services/api_config.dart';
 
 class TransactionService{
+
+  static Future<void> createTransaction(
+    double amount, 
+    int accountId, 
+    int categoryId, 
+    int currencyTypeId, 
+    double exchange_rate,
+  ) async {
+    final url = Uri.parse('${APIConfig.baseURL}transactions/');
+    print("Calling API: POST $url");
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${APIConfig.token}',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'amount': amount,
+        'accountId': accountId,
+        'categoryId': categoryId,
+        'currencyTypeId': currencyTypeId,
+        'exchange_rate': exchange_rate,
+      }),
+    );
+    if (response.statusCode == 200) {
+      print("API Response: ${response.body}");
+    } else {
+      print("API Error: ${response.statusCode} ${response.reasonPhrase}");
+      throw Exception('Failed to create transaction');
+    }
+  }
+
+
   static Future<List<Transaction>> fetchTransactions() async {
     final url = Uri.parse('${APIConfig.baseURL}transactions/');
     print("Calling API: GET $url");
