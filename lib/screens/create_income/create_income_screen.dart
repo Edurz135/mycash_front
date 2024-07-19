@@ -60,6 +60,7 @@ class CreateIncomeFormState extends State<CreateIncomeForm> {
   final _formKey = GlobalKey<FormState>();
 
   int _idacc = 1;
+  String _type =  " ";
   int _currencyTypeId = 1;
   double _amount = 0.0;
   int _ctg = 1;
@@ -77,6 +78,38 @@ class CreateIncomeFormState extends State<CreateIncomeForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+        const Text(
+            'Nombre',
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: TextFormField(
+                validator: (value) {
+                if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese un nombre';
+                }
+                return null;
+                },
+                onSaved: (value) {
+                _type = value ?? "";
+                },
+                keyboardType: TextInputType.text,
+                style: const TextStyle(
+                    color: Colors.black), // Color del texto del campo de formulario
+                decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Ingrese el nombre',
+                hintStyle: TextStyle(color: Colors.grey), // Color del texto de sugerencia
+                ),
+            ),
+            ),
         const Text(
             'Cuenta',
             style: TextStyle(fontSize: 18),
@@ -279,7 +312,7 @@ class CreateIncomeFormState extends State<CreateIncomeForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   controller.createTransaction(
-                      _amount,_idacc,_ctg, _currencyTypeId as int, _exrt);
+                      _amount,_type,_idacc,_ctg, _currencyTypeId as int, _exrt);
                   // createAccount(_name, _currencyTypeId, _balance);
                   /*
                   amount, 

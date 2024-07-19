@@ -60,6 +60,7 @@ class CreateExpenseFormState extends State<CreateExpenseForm> {
   final _formKey = GlobalKey<FormState>();
 
   int _idacc = 1;
+  String _type = "";
   int _currencyTypeId = 1;
   double _amount = 0.0;
   int _ctg = 1;
@@ -279,7 +280,7 @@ class CreateExpenseFormState extends State<CreateExpenseForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   controller.createTransaction(
-                      _amount,_idacc,_ctg, _currencyTypeId as int, _exrt);
+                      _amount,_type,_idacc,_ctg, _currencyTypeId as int, _exrt);
                   // createAccount(_name, _currencyTypeId, _balance);
                   /*
                   amount, 

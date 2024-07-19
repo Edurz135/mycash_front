@@ -9,6 +9,7 @@ class TransactionService{
 
   static Future<void> createTransaction(
     double amount, 
+    String type,
     int accountId, 
     int categoryId, 
     int currencyTypeId, 
@@ -24,6 +25,7 @@ class TransactionService{
       },
       body: json.encode({
         'amount': amount,
+        'type': type,
         'accountId': accountId,
         'categoryId': categoryId,
         'currencyTypeId': currencyTypeId,

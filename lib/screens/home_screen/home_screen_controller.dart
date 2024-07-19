@@ -102,10 +102,11 @@ class HomeScreenController extends GetxController {
   }
 
   Future<void> createTransaction(
-      double amount, int accountId, int categoryId, int currencyTypeId, double? exchange_rate) async {
+      double amount, String type,int accountId, int categoryId, int currencyTypeId, double? exchange_rate) async {
     try {
       TransactionService.createTransaction(
         amount, 
+        type,
         accountId,
         categoryId, 
         currencyTypeId, 

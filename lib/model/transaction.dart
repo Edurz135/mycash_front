@@ -24,7 +24,7 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
       id: json['id'],
-      type: json['type'], // Esto puede ser nulo
+      type: json['type']?? '',
       amount: json['amount'].toDouble(),
       exchangeRate: json['exchange_rate'].toDouble(), // Esto puede ser nulo
       categoryId: json['categoryId'],

@@ -12,7 +12,7 @@ class TransactionScreen extends StatefulWidget {
 }
 
 class _TransactionScreenState extends State<TransactionScreen> {
-  String _filtroActual = 'Todos';
+  int _filtroActual = 0;
   TransaccionScreenController controller = Get.put(TransaccionScreenController());
 
   @override
@@ -25,11 +25,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
   List<Transaction> get transaccionesFiltradas {
     List<Transaction> transacciones;
 
-    if (_filtroActual == 'Todos') {
+    if (_filtroActual == 0) {
       transacciones = controller.transaccions;
     } else {
       transacciones = controller.transaccions
-        .where((transaccion) => transaccion.type == _filtroActual)
+        .where((transaccion) => transaccion.categoryId == _filtroActual)
         .toList();
     }
 
@@ -134,7 +134,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              _filtroActual = 'Todos';
+                              _filtroActual = 0;
                             });
                           },
                           child: Text('Todos', style: TextStyle(color: Colors.white)),
@@ -142,18 +142,18 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              _filtroActual = 'Rental Income';
+                              _filtroActual = 1;
                             });
                           },
-                          child: Text('Rental Income', style: TextStyle(color: Colors.white)),
+                          child: Text('Entrenamiento', style: TextStyle(color: Colors.white)),
                         ),
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              _filtroActual = 'Universidad';
+                              _filtroActual = 2;
                             });
                           },
-                          child: Text('Universidad', style: TextStyle(color: Colors.white)),
+                          child: Text('Transporte', style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
