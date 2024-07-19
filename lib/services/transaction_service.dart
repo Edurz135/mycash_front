@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mycash_front/model/transaction.dart';
 import 'package:mycash_front/services/api_config.dart';
@@ -55,6 +57,26 @@ class TransactionService{
     }
 
   }
-
-  
+  static Future<bool> transfer(int fromId, int toId, double amount) async {
+    Map<String, dynamic> requestBody = {
+      'fromAccountId': fromId,
+      'toAccountId': toId,
+      'amount': amount
+    };
+    final url = Uri.parse('${APIConfig.baseURL}transfer/waza/');
+    debugPrint("Calling API: Transfer $url");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(requestBody),
+    );
+    if (response.statusCode == 200) {
+      debugPrint("RESPONSE: ${response.body}");
+      return true;
+    } else {
+      throw Exception('Error on api call: ${response.body}');
+    }
+  }
 }
