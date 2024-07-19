@@ -101,6 +101,21 @@ class HomeScreenController extends GetxController {
     }
   }
 
+  Future<void> createTransaction(
+      double amount, int accountId, int categoryId, int currencyTypeId, double? exchange_rate) async {
+    try {
+      TransactionService.createTransaction(
+        amount, 
+        accountId,
+        categoryId, 
+        currencyTypeId, 
+        exchange_rate!,
+      ).then((_) async => {await fetchTransactions()});
+    } catch (error) {
+      print("Error creating transaction: $error");
+    }
+  }
+
   Future<void> deleteAccount(int id) async {
     try {
       print('Deleting account');
