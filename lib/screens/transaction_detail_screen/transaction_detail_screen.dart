@@ -104,7 +104,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                   "PEN ${transaction.amount}",
                   style: TextStyle(
                     fontSize: 15,
-                    color: Colors.green,
+                    color: transaction.amount < 0 ? Colors.red :Colors.green,
                     shadows: [
                       Shadow(
                         color: Colors.white,

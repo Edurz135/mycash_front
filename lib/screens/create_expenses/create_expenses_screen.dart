@@ -79,6 +79,38 @@ class CreateExpenseFormState extends State<CreateExpenseForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         const Text(
+            'Nombre',
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: TextFormField(
+                validator: (value) {
+                if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese un nombre';
+                }
+                return null;
+                },
+                onSaved: (value) {
+                _type = value ?? "";
+                },
+                keyboardType: TextInputType.text,
+                style: const TextStyle(
+                    color: Colors.black), // Color del texto del campo de formulario
+                decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Ingrese el nombre',
+                hintStyle: TextStyle(color: Colors.grey), // Color del texto de sugerencia
+                ),
+            ),
+          ),
+        const Text(
             'Cuenta',
             style: TextStyle(fontSize: 18),
           ),

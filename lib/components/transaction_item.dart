@@ -69,7 +69,9 @@ class TransactionItem extends StatelessWidget {
                   Text(
                     'PEN $monto',
                     style: TextStyle(
-                        color: Color.fromRGBO(80, 196, 116, 1), fontSize: 19),
+                      color: monto < 0 ? Colors.red : Color.fromRGBO(80, 196, 116, 1),
+                      fontSize: 19,
+                    ),
                   ),
                   Text(
                     fecha,
